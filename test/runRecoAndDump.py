@@ -15,8 +15,10 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
+process.load('Configuration.StandardSequences.RawToDigi_cff')
+process.load('Configuration.StandardSequences.Reconstruction_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(options.maxEvents)
@@ -70,7 +72,12 @@ process.source = cms.Source("PoolSource",
                                 fileNames = cms.untracked.vstring(options.inputFiles),
                                 secondaryFileNames = cms.untracked.vstring()
                                 )
+                                                    
 
+process.raw2digi_step = cms.Path(process.RawToDigi)
+process.reconstruction_step = cms.Path(process.reconstruction)
+
+process.ecalDigis_step = cms.Path(process.ecalDigis)
 process.multifit = cms.Path(process.ecalMultiFitUncalibRecHit)
 
 
@@ -79,6 +86,9 @@ process.endjob_step = cms.EndPath(process.endOfProcess)
 
 
 process.schedule = cms.Schedule(
+                                process.raw2digi_step, 
+                                process.reconstruction_step, 
+                                process.ecalDigis_step,
                                 process.multifit,
                                 process.TreeProducer_step, 
                                 process.endjob_step

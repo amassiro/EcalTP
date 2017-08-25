@@ -114,11 +114,11 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
       // ----------member data ---------------------------
       
-      edm::EDGetTokenT<EBDigiCollection> token_ebdigis_;
-      edm::EDGetTokenT<EEDigiCollection> token_eedigis_;
+      edm::EDGetTokenT<EBDigiCollection> _token_ebdigis;
+      edm::EDGetTokenT<EEDigiCollection> _token_eedigis;
       
-      edm::EDGetTokenT<EcalUncalibratedRecHitCollection> token_ebrechits_;
-      edm::EDGetTokenT<EcalUncalibratedRecHitCollection> token_eerechits_;
+      edm::EDGetTokenT<EcalUncalibratedRecHitCollection> _token_ebrechits;
+      edm::EDGetTokenT<EcalUncalibratedRecHitCollection> _token_eerechits;
       
       TTree *outTree;
       
@@ -154,11 +154,11 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    usesResource("TFileService");
    edm::Service<TFileService> fs;
    
-   token_ebdigis_ = consumes<EBDigiCollection>(iConfig.getParameter<edm::InputTag>("EBDigiCollection"));
-   token_eedigis_ = consumes<EEDigiCollection>(iConfig.getParameter<edm::InputTag>("EEDigiCollection"));
+   _token_ebdigis = consumes<EBDigiCollection>(iConfig.getParameter<edm::InputTag>("EBDigiCollection"));
+   _token_eedigis = consumes<EEDigiCollection>(iConfig.getParameter<edm::InputTag>("EEDigiCollection"));
    
-   token_ebrechits_ = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEBCollection"));
-   token_eerechits_ = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEECollection"));
+   _token_ebrechits = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEBCollection"));
+   _token_eerechits = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEECollection"));
    
    
    outTree = fs->make<TTree>("pulses","pulses");
@@ -199,17 +199,17 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   
   //---- digi 
   
-  edm::Handle<EBDigiCollection> ebdigihandle;
-  edm::Handle<EEDigiCollection> eedigihandle;
-    
-  iEvent.getByToken(token_ebdigis_,ebdigihandle);
-  auto ebdigis = ebdigihandle.product();
-//   for (uint i=0; i<ebdigis->size(); i++) 
-//     FillDigi((*ebdigis)[i],ebrechits,w_ebrechits);
-  iEvent.getByToken(token_eedigis_,eedigihandle);
-  auto eedigis = eedigihandle.product();
-//   for (uint i=0; i<eedigis->size(); i++)
-//     FillDigi((*eedigis)[i],eerechits,w_eerechits);
+//   edm::Handle<EBDigiCollection> ebdigihandle;
+//   edm::Handle<EEDigiCollection> eedigihandle;
+//     
+//   iEvent.getByToken(_token_ebdigis,ebdigihandle);
+//   auto ebdigis = ebdigihandle.product();
+// //   for (uint i=0; i<ebdigis->size(); i++) 
+// //     FillDigi((*ebdigis)[i],ebrechits,w_ebrechits);
+//   iEvent.getByToken(_token_eedigis,eedigihandle);
+//   auto eedigis = eedigihandle.product();
+// //   for (uint i=0; i<eedigis->size(); i++)
+// //     FillDigi((*eedigis)[i],eerechits,w_eerechits);
   
   
   //---- rechits
@@ -219,9 +219,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   edm::Handle<EcalUncalibratedRecHitCollection> eerechithandle;
   const EcalUncalibratedRecHitCollection *eerechits = NULL;
   
-  iEvent.getByToken(token_ebrechits_,ebrechithandle);
+  iEvent.getByToken(_token_ebrechits,ebrechithandle);
   ebrechits = ebrechithandle.product();
-  iEvent.getByToken(token_eerechits_,eerechithandle);
+  iEvent.getByToken(_token_eerechits,eerechithandle);
   eerechits = eerechithandle.product();
   
   
@@ -235,6 +235,11 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     
     
   }
+  
+  
+  std::cout << " > ebrechits->size() = " << ebrechits->size() << std::endl;
+  std::cout << " > eerechits->size() = " << eerechits->size() << std::endl;
+  std::cout << " ~~ " << std::endl;
   
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
