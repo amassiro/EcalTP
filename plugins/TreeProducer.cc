@@ -117,6 +117,9 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       edm::EDGetTokenT<EBDigiCollection> token_ebdigis_;
       edm::EDGetTokenT<EEDigiCollection> token_eedigis_;
       
+      edm::EDGetTokenT<EcalUncalibratedRecHitCollection> token_ebrechits_;
+      edm::EDGetTokenT<EcalUncalibratedRecHitCollection> token_eerechits_;
+      
       TTree *outTree;
       
       UInt_t _run;
@@ -124,6 +127,7 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       UShort_t _bx;
       UShort_t _event;      
       int _flag[75848];
+      float _onlineEnergy[75848];
       
       
 };
@@ -153,13 +157,18 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    token_ebdigis_ = consumes<EBDigiCollection>(iConfig.getParameter<edm::InputTag>("EBDigiCollection"));
    token_eedigis_ = consumes<EEDigiCollection>(iConfig.getParameter<edm::InputTag>("EEDigiCollection"));
    
+   token_ebrechits_ = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEBCollection"));
+   token_eerechits_ = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEECollection"));
+   
+   
    outTree = fs->make<TTree>("pulses","pulses");
    
-   outTree->Branch("run",         &_run,      "run/i");
-   outTree->Branch("lumi",        &_lumi,     "lumi/s");
-   outTree->Branch("bx",          &_bx,       "bx/s");
-   outTree->Branch("event",       &_event,    "event/i");
-   outTree->Branch("flag",          _flag,     "flag[75848]/F");
+   outTree->Branch("run",               &_run,             "run/i");
+   outTree->Branch("lumi",              &_lumi,            "lumi/s");
+   outTree->Branch("bx",                &_bx,              "bx/s");
+   outTree->Branch("event",             &_event,           "event/i");
+   outTree->Branch("flag",               _flag,            "flag[75848]/F");
+   outTree->Branch("onlineEnergy",       _onlineEnergy,    "onlineEnergy[75848]/F");
    
 
 }
@@ -188,6 +197,8 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   _event = iEvent.eventAuxiliary().event();
   
   
+  //---- digi 
+  
   edm::Handle<EBDigiCollection> ebdigihandle;
   edm::Handle<EEDigiCollection> eedigihandle;
     
@@ -201,11 +212,71 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //     FillDigi((*eedigis)[i],eerechits,w_eerechits);
   
   
+  //---- rechits
+  
+  edm::Handle<EcalUncalibratedRecHitCollection> ebrechithandle;
+  const EcalUncalibratedRecHitCollection *ebrechits = NULL;
+  edm::Handle<EcalUncalibratedRecHitCollection> eerechithandle;
+  const EcalUncalibratedRecHitCollection *eerechits = NULL;
+  
+  iEvent.getByToken(token_ebrechits_,ebrechithandle);
+  ebrechits = ebrechithandle.product();
+  iEvent.getByToken(token_eerechits_,eerechithandle);
+  eerechits = eerechithandle.product();
+  
+  
+  
+  //---- fill information
+  
   for (int ixtal=0; ixtal < 75848; ixtal++) {
-  //---- Fill flag for this crystal
+    //---- Fill flag for this crystal
+    _flag[ixtal] = -99;
+    _onlineEnergy[ixtal] = -99;
+    
     
   }
-    
+  
+  
+  for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
+    std::cout << "EB = " << itrechit->amplitude() << std::endl;
+  }
+
+  
+  for (EcalUncalibratedRecHitCollection::const_iterator itrechit = eerechits->begin(); itrechit != eerechits->end(); itrechit++ ) {
+    std::cout << "EE = " << itrechit->amplitude() << std::endl;
+  }
+  
+  //   _multifit[j] = (j==5) ? it->amplitude() : it->outOfTimeAmplitude(j);
+
+//   
+//   
+//   
+//   auto detid = DetId(_id);
+//   
+//   for (int j=0; j<10; j++) _multifit[j] = 0;
+//   _amplitude_weight = 0;
+//   auto subGeom =  geometry->getSubdetectorGeometry(detid);
+//   auto cellGeom = subGeom->getGeometry(detid);
+//   _eta = cellGeom->getPosition().eta();
+//   _phi = cellGeom->getPosition().phi();
+//   auto it = rechits->find(detid);
+//   if (it==rechits->end()) std::cout << "Warning: rechit (multifit) not found" << std::endl;
+//   else {
+//     
+//     for (int j=0; j<10; j++) _multifit[j] = (j==5) ? it->amplitude() : it->outOfTimeAmplitude(j);
+//     
+//     _chi2 = it->chi2();
+//     _jitter = it->jitter();
+//     _jitterError = it->jitterError();
+//     _amplitudeError = it->amplitudeError();
+//     _recoflags = it->flags();
+//     
+//     
+//   }
+//   
+  
+  
+   
   outTree->Fill();
   
    
