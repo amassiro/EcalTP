@@ -120,15 +120,22 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       edm::EDGetTokenT<EcalUncalibratedRecHitCollection> _token_ebrechits;
       edm::EDGetTokenT<EcalUncalibratedRecHitCollection> _token_eerechits;
       
+      edm::EDGetTokenT<EcalTrigPrimDigiCollection> _token_tpCollection;
+      
+      
       TTree *outTree;
       
       UInt_t _run;
       UShort_t _lumi;
       UShort_t _bx;
       UShort_t _event;      
-      int _flag[75848];
-      float _onlineEnergy[75848];
+      int _flagEB[61200];
+      float _onlineEnergyEB[61200];
+      int _flagEE[14648];
+      float _onlineEnergyEE[14648];
       
+      float _TPonlineEnergyADC[2000];
+      float _TPonlineEnergyThresholdADC[2000];
       
 };
 
@@ -160,6 +167,9 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    _token_ebrechits = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEBCollection"));
    _token_eerechits = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEECollection"));
    
+   _token_tpCollection = consumes<EcalTrigPrimDigiCollection>(iConfig.getParameter<edm::InputTag>("TPCollection")) ;
+   
+    
    
    outTree = fs->make<TTree>("pulses","pulses");
    
@@ -167,10 +177,18 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    outTree->Branch("lumi",              &_lumi,            "lumi/s");
    outTree->Branch("bx",                &_bx,              "bx/s");
    outTree->Branch("event",             &_event,           "event/i");
-   outTree->Branch("flag",               _flag,            "flag[75848]/F");
-   outTree->Branch("onlineEnergy",       _onlineEnergy,    "onlineEnergy[75848]/F");
+   outTree->Branch("flagEB",               _flagEB,            "flagEB[61200]/F");
+   outTree->Branch("onlineEnergyEB",       _onlineEnergyEB,    "onlineEnergyEB[61200]/F");
+   outTree->Branch("flagEE",               _flagEE,            "flagEE[14648]/F");
+   outTree->Branch("onlineEnergyEE",       _onlineEnergyEE,    "onlineEnergyEE[14648]/F");
    
-
+   outTree->Branch("TPonlineEnergyADC",                _TPonlineEnergyADC,             "TPonlineEnergyADC[2000]/F");
+   outTree->Branch("TPonlineEnergyThresholdADC",       _TPonlineEnergyThresholdADC,    "TPonlineEnergyThresholdADC[2000]/F");
+   
+   
+   
+   
+   
 }
 
 
@@ -228,12 +246,15 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   
   //---- fill information
   
-  for (int ixtal=0; ixtal < 75848; ixtal++) {
+  for (int ixtal=0; ixtal < 61200; ixtal++) {
     //---- Fill flag for this crystal
-    _flag[ixtal] = -99;
-    _onlineEnergy[ixtal] = -99;
-    
-    
+    _flagEB[ixtal] = -99;
+    _onlineEnergyEB[ixtal] = -99;
+  }
+  for (int ixtal=0; ixtal < 14648; ixtal++) {
+    //---- Fill flag for this crystal
+    _flagEE[ixtal] = -99;
+    _onlineEnergyEE[ixtal] = -99;
   }
   
   
@@ -243,17 +264,110 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
-//     _onlineEnergy[ixtal] =  itrechit->amplitude();
+    _onlineEnergyEB[EBDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();
 //     std::cout << "EB = " << itrechit->amplitude() << std::endl;
-    std::cout << "EB = " << itrechit->id().subdetId() << " -- " << itrechit->id().rawId() << " -- "  << std::endl;
+//     std::cout << "EB = " << itrechit->id().subdetId() << " -- " << itrechit->id().rawId() << " -- "  << std::endl;
+//     std::cout << "   = " << EBDetId(itrechit->id()).hashedIndex() << " -- "  << std::endl;
+
+//     const EcalTrigTowerDetId towid = EBDetId(itrechit->id()).tower();
+    
+    
   }
 
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = eerechits->begin(); itrechit != eerechits->end(); itrechit++ ) {
-//     _onlineEnergy[ixtal] =  itrechit->amplitude();
+    _onlineEnergyEE[EEDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();
 //     std::cout << "EE = " << itrechit->amplitude() << std::endl;
-    std::cout << "EE = " << itrechit->id().subdetId() << " -- " << itrechit->id().rawId() << " -- "  << std::endl;
+//     std::cout << "EE = " << itrechit->id().subdetId() << " -- " << itrechit->id().rawId() << " -- "  << std::endl;
+//     std::cout << "   = " << EEDetId(itrechit->id()).hashedIndex() << " -- "  << std::endl;
   }
+  
+  
+  
+  //----
+  //---- kindly borrowed from
+  //----     https://gitlab.cern.ch/ECALPFG/EcalTPGAnalysis/blob/master/TriggerAnalysis/plugins/EcalTPGAnalyzer.cc#L860
+  //----     thanks ETT!
+  //----
+  
+    
+  edm::Handle<EcalTrigPrimDigiCollection> tphandle;
+  iEvent.getByToken(_token_tpCollection,tphandle);
+  
+  
+  for (int iTP=0; iTP < 2000; iTP++) {
+    _TPonlineEnergyADC[iTP] = -99;
+    _TPonlineEnergyThresholdADC[iTP] = -99;
+  }
+  
+  for (unsigned int i=0;i<tphandle.product()->size();i++) {
+    EcalTriggerPrimitiveDigi d = (*(tphandle.product()))[i];
+    const EcalTrigTowerDetId TPtowid = d.id();
+//     towerEner tE ;
+//     //tE.TCCid_= theMapping_->TCCid(TPtowid);
+//     //tE.TowerInTCC_ = theMapping_->iTT(TPtowid);
+//     //      const EcalTriggerElectronicsId elId = theMapping_->getTriggerElectronicsId(id) ;
+//     //tE.strip_ = 0;//elId.pseudoStripId() ;
+//     
+//     tE.iphi_ = TPtowid.iphi() ;
+//     tE.ieta_ = TPtowid.ieta() ;
+//     tE.ttFlag_ = d[0].ttFlag();
+//     tE.tpgADC_ = (d[0].raw()&0xfff) ;
+//     tE.twrADC = (d[0].raw()&0xff) ;
+//     tE.sFGVB = (d[0].sFGVB());
+//     mapTower[TPtowid] = tE ;
+
+    std::cout << " TPtowid.hashedIndex() = " << TPtowid.hashedIndex() << std::endl;
+    _TPonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw()&0xfff);
+    _TPonlineEnergyThresholdADC[ TPtowid.hashedIndex() ] = (d[0].raw()&0xff);
+    
+//     tE.iphi_ = TPtowid.iphi() ;
+//     tE.ieta_ = TPtowid.ieta() ;
+//     tE.ttFlag_ = d[0].ttFlag();
+//     tE.tpgADC_ = (d[0].raw()&0xfff) ;
+//     tE.twrADC = (d[0].raw()&0xff) ;
+//     tE.sFGVB = (d[0].sFGVB());
+//     mapTower[TPtowid] = tE ;
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+//   for (unsigned int i=0;i<digiEB.product()->size();i++) {
+//     const EBDataFrame & df = (*(digiEB.product()))[i];    
+//     const EBDetId & id = df.id();
+//     const EcalTrigTowerDetId towid = id.tower();
+//     itTT = mapTower.find(towid) ;
+//     if (itTT != mapTower.end()) {
+//       (itTT->second).nbXtal_++ ;
+//       bool fill(false) ;
+//       if (((itTT->second).tpgADC_ & 0xff)>0) fill = true ;   
+//       for (int j=0 ; j<5 ; j++) if (((itTT->second).tpgEmul_[j] & 0xff)>8) fill = true ;                  
+//       if (fill) {
+//         if(print_) cout<<"TP="<<((itTT->second).tpgADC_ & 0xff)<<" eta="<<towid.ieta()<<" phi="<<towid.iphi()<<endl ;
+//         if (print_) for (int j=0 ; j<5 ; j++) if (((itTT->second).tpgEmul_[j] & 0xff)>8) cout << "tp emul "<<  j << " " << ((itTT->second).tpgEmul_[j] & 0xff)<< endl;
+//         treeVariablesShape_.ieta = towid.ieta() ;
+//         treeVariablesShape_.iphi = towid.iphi() ;
+//         treeVariablesShape_.ixXtal = id.iphi() ;
+//         treeVariablesShape_.iyXtal = id.ieta() ;
+//         treeVariablesShape_.TCCid = theMapping_->TCCid(towid);
+//         treeVariablesShape_.TowerInTCC = theMapping_->iTT(towid);
+//         const EcalTriggerElectronicsId elId = theMapping_->getTriggerElectronicsId(id) ;
+//         treeVariablesShape_.strip = elId.pseudoStripId() ;
+//         treeVariablesShape_.nbOfSamples = df.size() ;
+//         for (int s=0 ; s<df.size() ; s++) treeVariablesShape_.samp[s] = df[s].adc() ; 
+//         treeShape_->Fill() ;
+//       }
+//     }
+//   }
+  
+  
+  
+  
   
   //   _multifit[j] = (j==5) ? it->amplitude() : it->outOfTimeAmplitude(j);
 

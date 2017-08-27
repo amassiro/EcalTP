@@ -104,6 +104,8 @@ process.TreeProducer = cms.EDAnalyzer('TreeProducer',
                            #EcalUncalibRecHitsEBCollection = cms.InputTag("ecalRecHit",  "EcalRecHitsEB"),
                            #EcalUncalibRecHitsEECollection = cms.InputTag("ecalRecHit",  "EcalRecHitsEE"),
 
+                           TPCollection = cms.InputTag("ecalDigis","EcalTriggerPrimitives"),
+                           
                            )
 
 
