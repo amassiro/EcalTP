@@ -243,12 +243,16 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
-    std::cout << "EB = " << itrechit->amplitude() << std::endl;
+//     _onlineEnergy[ixtal] =  itrechit->amplitude();
+//     std::cout << "EB = " << itrechit->amplitude() << std::endl;
+    std::cout << "EB = " << itrechit->id().subdetId() << " -- " << itrechit->id().rawId() << " -- "  << std::endl;
   }
 
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = eerechits->begin(); itrechit != eerechits->end(); itrechit++ ) {
-    std::cout << "EE = " << itrechit->amplitude() << std::endl;
+//     _onlineEnergy[ixtal] =  itrechit->amplitude();
+//     std::cout << "EE = " << itrechit->amplitude() << std::endl;
+    std::cout << "EE = " << itrechit->id().subdetId() << " -- " << itrechit->id().rawId() << " -- "  << std::endl;
   }
   
   //   _multifit[j] = (j==5) ? it->amplitude() : it->outOfTimeAmplitude(j);
