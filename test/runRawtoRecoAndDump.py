@@ -87,6 +87,43 @@ process.reconstruction_step = cms.Path(process.reconstruction)
 
 
 
+
+#process.simEcalTriggerPrimitiveDigis = cms.EDProducer("EcalTrigPrimProducer",
+    #BarrelOnly = cms.bool(False),
+    #Debug = cms.bool(False),
+    #Famos = cms.bool(False),
+    #InstanceEB = cms.string(''),
+    #InstanceEE = cms.string(''),
+    #Label = cms.string('simEcalUnsuppressedDigis'),
+    #TcpOutput = cms.bool(False),
+    #binOfMaximum = cms.int32(6)
+#)
+
+
+
+
+process.ecalTriggerPrimitiveDigis = cms.EDProducer("EcalTrigPrimProducer",
+    InstanceEB = cms.string('ebDigis'),
+    InstanceEE = cms.string('eeDigis'),
+    Label = cms.string('ecalDigis'),
+
+    BarrelOnly = cms.bool(False),
+    Famos = cms.bool(False),
+    TcpOutput = cms.bool(False),
+
+    Debug = cms.bool(False),
+
+    binOfMaximum = cms.int32(6), ## optional from release 200 on, from 1-10
+                                                   
+#    TTFHighEnergyEB = cms.double(1.0),
+#    TTFHighEnergyEE = cms.double(1.0),
+#    TTFLowEnergyEB = cms.double(1.0), ## this + the following is added from 140_pre4 on
+#    TTFLowEnergyEE = cms.double(1.0)
+)
+
+process.ecalTriggerPrimitiveDigis_step = cms.Path(process.ecalTriggerPrimitiveDigis)
+
+
 process.TFileService = cms.Service("TFileService",
      fileName = cms.string(options.outputFile)
 )
@@ -105,6 +142,8 @@ process.TreeProducer = cms.EDAnalyzer('TreeProducer',
                            #EcalUncalibRecHitsEECollection = cms.InputTag("ecalRecHit",  "EcalRecHitsEE"),
 
                            TPCollection = cms.InputTag("ecalDigis","EcalTriggerPrimitives"),
+
+                           TPEmuCollection = cms.InputTag("ecalTriggerPrimitiveDigis"),
                            
                            )
 
@@ -131,6 +170,7 @@ process.schedule = cms.Schedule(
           process.reconstruction_step,
           process.ecalDigis_step,
           #process.multifit
+          process.ecalTriggerPrimitiveDigis_step,
           process.TreeProducer_step
           )
                                 

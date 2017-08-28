@@ -121,6 +121,7 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       edm::EDGetTokenT<EcalUncalibratedRecHitCollection> _token_eerechits;
       
       edm::EDGetTokenT<EcalTrigPrimDigiCollection> _token_tpCollection;
+      edm::EDGetTokenT<EcalTrigPrimDigiCollection> _token_tpEmuCollection;
       
       
       TTree *outTree;
@@ -134,8 +135,12 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       int _flagEE[14648];
       float _onlineEnergyEE[14648];
       
-      float _TPonlineEnergyADC[2000];
-      float _TPonlineEnergyThresholdADC[2000];
+      float _TPflag[4032];
+      float _TPonlineEnergyADC[4032];
+      float _TPonlineEnergyThresholdADC[4032];
+
+      float _TPEmuflag[4032];
+      float _TPEmuonlineEnergyADC[4032];
       
 };
 
@@ -167,11 +172,12 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    _token_ebrechits = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEBCollection"));
    _token_eerechits = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEECollection"));
    
-   _token_tpCollection = consumes<EcalTrigPrimDigiCollection>(iConfig.getParameter<edm::InputTag>("TPCollection")) ;
+   _token_tpCollection    = consumes<EcalTrigPrimDigiCollection>(iConfig.getParameter<edm::InputTag>("TPCollection")) ;
+   _token_tpEmuCollection = consumes<EcalTrigPrimDigiCollection>(iConfig.getParameter<edm::InputTag>("TPEmuCollection")) ;
    
     
    
-   outTree = fs->make<TTree>("pulses","pulses");
+   outTree = fs->make<TTree>("tree","tree");
    
    outTree->Branch("run",               &_run,             "run/i");
    outTree->Branch("lumi",              &_lumi,            "lumi/s");
@@ -182,8 +188,14 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    outTree->Branch("flagEE",               _flagEE,            "flagEE[14648]/F");
    outTree->Branch("onlineEnergyEE",       _onlineEnergyEE,    "onlineEnergyEE[14648]/F");
    
-   outTree->Branch("TPonlineEnergyADC",                _TPonlineEnergyADC,             "TPonlineEnergyADC[2000]/F");
-   outTree->Branch("TPonlineEnergyThresholdADC",       _TPonlineEnergyThresholdADC,    "TPonlineEnergyThresholdADC[2000]/F");
+   
+   
+   outTree->Branch("TPflag",                _TPflag,             "TPflag[4032]/F");
+   outTree->Branch("TPonlineEnergyADC",                _TPonlineEnergyADC,             "TPonlineEnergyADC[4032]/F");
+   outTree->Branch("TPonlineEnergyThresholdADC",       _TPonlineEnergyThresholdADC,    "TPonlineEnergyThresholdADC[4032]/F");
+  
+   outTree->Branch("TPEmuflag",                _TPEmuflag,             "TPEmuflag[4032]/F");
+   outTree->Branch("TPEmuonlineEnergyADC",                _TPEmuonlineEnergyADC,             "TPEmuonlineEnergyADC[4032]/F");
    
    
    
@@ -295,10 +307,13 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   iEvent.getByToken(_token_tpCollection,tphandle);
   
   
-  for (int iTP=0; iTP < 2000; iTP++) {
+  for (int iTP=0; iTP < 4032; iTP++) {
+    _TPflag[iTP] = -99;
     _TPonlineEnergyADC[iTP] = -99;
     _TPonlineEnergyThresholdADC[iTP] = -99;
   }
+  
+  std::cout << " tphandle.product()->size() = " << tphandle.product()->size() << std::endl;
   
   for (unsigned int i=0;i<tphandle.product()->size();i++) {
     EcalTriggerPrimitiveDigi d = (*(tphandle.product()))[i];
@@ -317,9 +332,14 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //     tE.sFGVB = (d[0].sFGVB());
 //     mapTower[TPtowid] = tE ;
 
-    std::cout << " TPtowid.hashedIndex() = " << TPtowid.hashedIndex() << std::endl;
-    _TPonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw()&0xfff);
-    _TPonlineEnergyThresholdADC[ TPtowid.hashedIndex() ] = (d[0].raw()&0xff);
+//     std::cout << " TPtowid.hashedIndex() = " << TPtowid.hashedIndex() << std::endl;
+//     std::cout << "        -> " <<  (d[0].raw() & 0xfff) << std::endl;
+//     std::cout << "        -> " <<  (d[0].raw() & 0xff ) << std::endl;
+    if (TPtowid.hashedIndex() < 4032) {
+      _TPflag[  TPtowid.hashedIndex() ] = (d[0].ttFlag());
+      _TPonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xfff);
+      _TPonlineEnergyThresholdADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xff);
+    }
     
 //     tE.iphi_ = TPtowid.iphi() ;
 //     tE.ieta_ = TPtowid.ieta() ;
@@ -330,6 +350,34 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //     mapTower[TPtowid] = tE ;
     
   }
+  
+  
+  
+  
+  
+  
+  edm::Handle<EcalTrigPrimDigiCollection> tpEmuHandle;
+  iEvent.getByToken(_token_tpEmuCollection,tpEmuHandle);
+  
+  
+  for (int iTP=0; iTP < 4032; iTP++) {
+    _TPEmuflag[iTP] = -99;
+    _TPEmuonlineEnergyADC[iTP] = -99;
+  }
+  
+  std::cout << " tpEmuHandle.product()->size() = " << tpEmuHandle.product()->size() << std::endl;
+  
+  for (unsigned int i=0;i<tpEmuHandle.product()->size();i++) {
+    EcalTriggerPrimitiveDigi d = (*(tpEmuHandle.product()))[i];
+    const EcalTrigTowerDetId TPtowid = d.id();
+       if (TPtowid.hashedIndex() < 4032) {
+      _TPEmuflag[  TPtowid.hashedIndex() ] = (d[0].ttFlag());
+      _TPEmuonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xfff);
+    }    
+  }
+  
+  
+  
   
   
   
