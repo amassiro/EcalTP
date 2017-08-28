@@ -373,7 +373,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
        if (TPtowid.hashedIndex() < 4032) {
       _TPEmuflag[  TPtowid.hashedIndex() ] = (d[0].ttFlag());
       _TPEmuonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xfff);
-    }    
+      std::cout << " (d[0].raw() & 0xfff) = " << (d[0].raw() & 0xfff) << std::endl;
+      std::cout << " (d[0].raw()) = " << (d[0].raw()) << std::endl;
+     }    
   }
   
   
