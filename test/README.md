@@ -22,3 +22,12 @@ Run
     cmsDriver.py step2 --mc --eventcontent AODSIM --runUnscheduled --datatier AODSIM --conditions 92X_upgrade2017_realistic_v10 --step RAW2DIGI,RECO,EI --nThreads 4 --era Run2_2017  --fileout file:step1.root
     
     
+    
+    
+    
+    cmsRun runTPG_example.py
+    
+    
+    
+    
+    
