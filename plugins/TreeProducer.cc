@@ -336,9 +336,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //     std::cout << "        -> " <<  (d[0].raw() & 0xfff) << std::endl;
 //     std::cout << "        -> " <<  (d[0].raw() & 0xff ) << std::endl;
     if (TPtowid.hashedIndex() < 4032) {
-      _TPflag[  TPtowid.hashedIndex() ] = (d[0].ttFlag());
-      _TPonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xfff);  //---- 0xfff = 4095
-      _TPonlineEnergyThresholdADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xff);   //---- 0xff = 255
+      _TPflag[  TPtowid.hashedIndex() ] = (d[2].ttFlag());
+      _TPonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[2].raw() & 0xfff);  //---- 0xfff = 4095
+      _TPonlineEnergyThresholdADC[ TPtowid.hashedIndex() ] = (d[2].raw() & 0xff);   //---- 0xff = 255
     }
     
 //     tE.iphi_ = TPtowid.iphi() ;
@@ -371,8 +371,8 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     EcalTriggerPrimitiveDigi d = (*(tpEmuHandle.product()))[i];
     const EcalTrigTowerDetId TPtowid = d.id();
        if (TPtowid.hashedIndex() < 4032) {
-      _TPEmuflag[  TPtowid.hashedIndex() ] = (d[0].ttFlag());
-      _TPEmuonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xfff);
+      _TPEmuflag[  TPtowid.hashedIndex() ] = (d[3].ttFlag());
+      _TPEmuonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[2].raw() & 0xfff);
 //       std::cout << " (d[0].raw() & 0xfff) = " << (d[0].raw() & 0xfff) << std::endl;
       //       std::cout << " (d[0].raw()) = " << (d[0].raw()) << std::endl;
       std::cout << "   (d[0].raw() & 0xfff) = " << (d[0].raw() & 0xfff);         std::cout << "   (d[0].raw()) = " << (d[0].raw() );
