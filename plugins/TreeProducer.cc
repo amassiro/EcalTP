@@ -137,8 +137,9 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       
       float _TPflag[4032];
       float _TPonlineEnergyADC[4032];
-      float _TPonlineEnergyThresholdADC[4032];
-
+      float _TPonlineEnergyTowerADC[4032];
+      float _TPonlineETADC[4032];
+      
       float _TPEmuflag[4032];
       float _TPEmuonlineEnergyADC[4032];
       
@@ -192,8 +193,10 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    
    outTree->Branch("TPflag",                _TPflag,             "TPflag[4032]/F");
    outTree->Branch("TPonlineEnergyADC",                _TPonlineEnergyADC,             "TPonlineEnergyADC[4032]/F");
-   outTree->Branch("TPonlineEnergyThresholdADC",       _TPonlineEnergyThresholdADC,    "TPonlineEnergyThresholdADC[4032]/F");
-  
+   outTree->Branch("TPonlineEnergyTowerADC",       _TPonlineEnergyTowerADC,    "TPonlineEnergyTowerADC[4032]/F");
+   outTree->Branch("TPonlineETADC",       _TPonlineETADC,    "TPonlineETADC[4032]/F");
+   
+   
    outTree->Branch("TPEmuflag",                _TPEmuflag,             "TPEmuflag[4032]/F");
    outTree->Branch("TPEmuonlineEnergyADC",                _TPEmuonlineEnergyADC,             "TPEmuonlineEnergyADC[4032]/F");
    
@@ -310,7 +313,8 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   for (int iTP=0; iTP < 4032; iTP++) {
     _TPflag[iTP] = -99;
     _TPonlineEnergyADC[iTP] = -99;
-    _TPonlineEnergyThresholdADC[iTP] = -99;
+    _TPonlineEnergyTowerADC[iTP] = -99;
+    _TPonlineETADC[iTP] = -99;
   }
   
   std::cout << " tphandle.product()->size() = " << tphandle.product()->size() << std::endl;
@@ -336,9 +340,11 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //     std::cout << "        -> " <<  (d[0].raw() & 0xfff) << std::endl;
 //     std::cout << "        -> " <<  (d[0].raw() & 0xff ) << std::endl;
     if (TPtowid.hashedIndex() < 4032) {
-      _TPflag[  TPtowid.hashedIndex() ] = (d[2].ttFlag());
-      _TPonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[2].raw() & 0xfff);  //---- 0xfff = 4095
-      _TPonlineEnergyThresholdADC[ TPtowid.hashedIndex() ] = (d[2].raw() & 0xff);   //---- 0xff = 255
+      _TPflag[  TPtowid.hashedIndex() ] = (d[0].ttFlag());
+      _TPonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xfff);  //---- 0xfff = 4095
+      _TPonlineEnergyTowerADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xff);   //---- 0xff = 255
+      _TPonlineETADC[ TPtowid.hashedIndex() ] = (d[0].compressedEt()); 
+      
     }
     
 //     tE.iphi_ = TPtowid.iphi() ;
@@ -371,17 +377,17 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     EcalTriggerPrimitiveDigi d = (*(tpEmuHandle.product()))[i];
     const EcalTrigTowerDetId TPtowid = d.id();
        if (TPtowid.hashedIndex() < 4032) {
-      _TPEmuflag[  TPtowid.hashedIndex() ] = (d[3].ttFlag());
-      _TPEmuonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[2].raw() & 0xfff);
+      _TPEmuflag[  TPtowid.hashedIndex() ] = (d[0].ttFlag());
+      _TPEmuonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xfff);
 //       std::cout << " (d[0].raw() & 0xfff) = " << (d[0].raw() & 0xfff) << std::endl;
       //       std::cout << " (d[0].raw()) = " << (d[0].raw()) << std::endl;
-      std::cout << "   (d[0].raw() & 0xfff) = " << (d[0].raw() & 0xfff);         std::cout << "   (d[0].raw()) = " << (d[0].raw() );
-      std::cout << "   (d[1].raw() & 0xfff) = " << (d[1].raw() & 0xfff);         std::cout << "   (d[1].raw()) = " << (d[1].raw() );
-      std::cout << "   (d[2].raw() & 0xfff) = " << (d[2].raw() & 0xfff);         std::cout << "   (d[2].raw()) = " << (d[2].raw() );
-      std::cout << "   (d[3].raw() & 0xfff) = " << (d[3].raw() & 0xfff);         std::cout << "   (d[3].raw()) = " << (d[3].raw() );
-      std::cout << "   (d[4].raw() & 0xfff) = " << (d[4].raw() & 0xfff);         std::cout << "   (d[4].raw()) = " << (d[4].raw() );
+//       std::cout << "   (d[0].raw() & 0xfff) = " << (d[0].raw() & 0xfff);         std::cout << "   (d[0].raw()) = " << (d[0].raw() );
+//       std::cout << "   (d[1].raw() & 0xfff) = " << (d[1].raw() & 0xfff);         std::cout << "   (d[1].raw()) = " << (d[1].raw() );
+//       std::cout << "   (d[0].raw() & 0xfff) = " << (d[0].raw() & 0xfff);         std::cout << "   (d[0].raw()) = " << (d[0].raw() );
+//       std::cout << "   (d[3].raw() & 0xfff) = " << (d[3].raw() & 0xfff);         std::cout << "   (d[3].raw()) = " << (d[3].raw() );
+//       std::cout << "   (d[4].raw() & 0xfff) = " << (d[4].raw() & 0xfff);         std::cout << "   (d[4].raw()) = " << (d[4].raw() );
       
-      std::cout << std::endl;
+//       std::cout << std::endl;
        }    
   }
   

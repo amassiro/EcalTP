@@ -11,6 +11,14 @@ Run
     cmsRun runRawtoRecoAndDump.py             inputFiles=file:/eos/cms/store/relval/CMSSW_9_3_0_pre4/RelValNuGun/GEN-SIM-DIGI-RAW/93X_mc2017_realistic_v1-v1/00000/049A21E4-5586-E711-B126-0025905B85AA.root
     cmsRun runRawtoRecoAndDump.py             inputFiles=file:/tmp/amassiro/049A21E4-5586-E711-B126-0025905B85AA.root
     cmsRun runRawtoRecoAndDump.py             inputFiles=file:/tmp/amassiro/049A21E4-5586-E711-B126-0025905B85AA.root   maxEvents=-1   outputFile=rawtoworld-nugun.root
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:/tmp/amassiro/0A709BE3-5586-E711-A7C4-0025905A608E.root   maxEvents=-1   outputFile=rawtoworld-nugun.2.root
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:/tmp/amassiro/562922D0-5086-E711-B4B5-0CC47A4C8E1E.root   maxEvents=-1   outputFile=rawtoworld-nugun.3.root
+
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:/eos/cms/store/relval/CMSSW_9_3_0_pre4/RelValNuGun/GEN-SIM-DIGI-RAW/93X_mc2017_realistic_v1-v1/00000/0A709BE3-5586-E711-A7C4-0025905A608E.root
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:/eos/cms/store/relval/CMSSW_9_3_0_pre4/RelValNuGun/GEN-SIM-DIGI-RAW/93X_mc2017_realistic_v1-v1/00000/562922D0-5086-E711-B4B5-0CC47A4C8E1E.root
+    
+    
+
 
 
     
