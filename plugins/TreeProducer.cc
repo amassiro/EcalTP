@@ -77,6 +77,26 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 
 
+
+
+
+
+
+//---- for TP
+
+#include "CondFormats/EcalObjects/interface/EcalTPGLutIdMap.h"
+#include "CondFormats/EcalObjects/interface/EcalTPGLutGroup.h"
+#include "CondFormats/EcalObjects/interface/EcalTPGPhysicsConst.h"
+#include "CondFormats/DataRecord/interface/EcalTPGLutIdMapRcd.h"
+#include "CondFormats/DataRecord/interface/EcalTPGLutGroupRcd.h"
+#include "CondFormats/DataRecord/interface/EcalTPGPhysicsConstRcd.h"
+
+
+
+
+
+
+
 #include "TTree.h"
 
 
@@ -273,9 +293,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   }
   
   
-  std::cout << " > ebrechits->size() = " << ebrechits->size() << std::endl;
-  std::cout << " > eerechits->size() = " << eerechits->size() << std::endl;
-  std::cout << " ~~ " << std::endl;
+//   std::cout << " > ebrechits->size() = " << ebrechits->size() << std::endl;
+//   std::cout << " > eerechits->size() = " << eerechits->size() << std::endl;
+//   std::cout << " ~~ " << std::endl;
   
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
@@ -317,7 +337,31 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     _TPonlineETADC[iTP] = -99;
   }
   
-  std::cout << " tphandle.product()->size() = " << tphandle.product()->size() << std::endl;
+//   std::cout << " tphandle.product()->size() = " << tphandle.product()->size() << std::endl;
+  
+  
+  
+  edm::ESHandle<EcalTPGLutGroup> lutGrpHandle;
+  iSetup.get<EcalTPGLutGroupRcd>().get( lutGrpHandle );
+  const EcalTPGGroups::EcalTPGGroupsMap & lutGrpMap = lutGrpHandle.product()->getMap() ;  
+  
+  edm::ESHandle<EcalTPGPhysicsConst> physHandle;
+  iSetup.get<EcalTPGPhysicsConstRcd>().get( physHandle );
+  const EcalTPGPhysicsConstMap & physMap = physHandle.product()->getMap() ;
+ 
+  edm::ESHandle<EcalTPGLutIdMap> lutMapHandle;
+  iSetup.get<EcalTPGLutIdMapRcd>().get( lutMapHandle );
+  const EcalTPGLutIdMap::EcalTPGLutMap & lutMap = lutMapHandle.product()->getMap() ;  
+  
+  
+  EcalTPGPhysicsConstMapIterator ebItr(physMap.find(DetId(DetId::Ecal,EcalBarrel).rawId()));
+  double lsb10bitsEB(ebItr == physMap.end() ? 0. : ebItr->second.EtSat / 1024.);
+  EcalTPGPhysicsConstMapIterator eeItr(physMap.find(DetId(DetId::Ecal,EcalEndcap).rawId()));
+  double lsb10bitsEE(eeItr == physMap.end() ? 0. : eeItr->second.EtSat / 1024.);
+  
+  
+  
+  
   
   for (unsigned int i=0;i<tphandle.product()->size();i++) {
     EcalTriggerPrimitiveDigi d = (*(tphandle.product()))[i];
@@ -343,7 +387,39 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       _TPflag[  TPtowid.hashedIndex() ] = (d[0].ttFlag());
       _TPonlineEnergyADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xfff);  //---- 0xfff = 4095
       _TPonlineEnergyTowerADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xff);   //---- 0xff = 255
-      _TPonlineETADC[ TPtowid.hashedIndex() ] = (d[0].compressedEt()); 
+//       _TPonlineETADC[ TPtowid.hashedIndex() ] = (d[0].compressedEt()); 
+      
+      
+      
+      EcalTrigTowerDetId const& towerId(d.id());
+      unsigned int ADC = d[0].compressedEt();
+      
+      double lsb10bits(0.);
+      if(towerId.subDet() == EcalBarrel) lsb10bits = lsb10bitsEB;
+      else if(towerId.subDet() == EcalEndcap) lsb10bits = lsb10bitsEE;
+      
+      int tpg10bits = 0 ;
+      EcalTPGGroups::EcalTPGGroupsMapItr itgrp = lutGrpMap.find(towerId.rawId()) ;
+      uint32_t lutGrp = 999 ;
+      if (itgrp != lutGrpMap.end()) lutGrp = itgrp->second ;
+      
+      EcalTPGLutIdMap::EcalTPGLutMapItr itLut = lutMap.find(lutGrp) ;
+      if (itLut != lutMap.end()) {
+        const unsigned int * lut = (itLut->second).getLut() ;
+        for (unsigned int i=0 ; i<1024 ; i++)
+          if (ADC == (0xff & lut[i])) {
+            tpg10bits = i ;
+            break ;
+          }
+      }
+      
+      float tpEt = lsb10bits * tpg10bits;
+      
+      
+      _TPonlineETADC[ TPtowid.hashedIndex() ] = tpEt; 
+      
+      
+      
       
     }
     
@@ -371,7 +447,7 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     _TPEmuonlineEnergyADC[iTP] = -99;
   }
   
-  std::cout << " tpEmuHandle.product()->size() = " << tpEmuHandle.product()->size() << std::endl;
+//   std::cout << " tpEmuHandle.product()->size() = " << tpEmuHandle.product()->size() << std::endl;
   
   for (unsigned int i=0;i<tpEmuHandle.product()->size();i++) {
     EcalTriggerPrimitiveDigi d = (*(tpEmuHandle.product()))[i];
