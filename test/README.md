@@ -27,9 +27,9 @@ Run
 
 
     
-    Dataset: /RelValZEE/CMSSW_9_3_0_pre1-92X_mcRun1_realistic_v2-v1/GEN-SIM-DIGI-RAW-HLTDEBUG
-    xrdcp root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_3_0_pre1/RelValZEE/GEN-SIM-DIGI-RAW-HLTDEBUG/92X_mcRun1_realistic_v2-v1/00000/2A7BEA8A-0164-E711-8FDF-0025905A6122.root  /tmp/amassiro/
-    cmsRun runRawtoRecoAndDump.py             inputFiles=file:/tmp/amassiro/2A7BEA8A-0164-E711-8FDF-0025905A6122.root    maxEvents=-1   outputFile=rawtoworld-zeeMC.root
+    Dataset: /RelValZEE_13/CMSSW_9_3_0_pre3-PU25ns_92X_upgrade2017_realistic_v10_resub-v1/GEN-SIM-DIGI-RAW
+    xrdcp root://cms-xrd-global.cern.ch//store/relval/CMSSW_9_3_0_pre3/RelValZEE_13/GEN-SIM-DIGI-RAW/PU25ns_92X_upgrade2017_realistic_v10_resub-v1/00000/50E5E113-947F-E711-991B-0CC47A4D764A.root  /tmp/amassiro/
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:/tmp/amassiro/50E5E113-947F-E711-991B-0CC47A4D764A.root   maxEvents=-1   outputFile=rawtoworld-zeeMC.root
 
     
     
@@ -48,6 +48,11 @@ Run
     
     cmsRun runTPG_example.py
     
+    
+    
+    
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,10)", "TPonlineETADC>-1", "colz");
     
     
     
