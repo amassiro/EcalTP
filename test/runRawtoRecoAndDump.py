@@ -42,7 +42,9 @@ process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(options.inputFiles),
     secondaryFileNames = cms.untracked.vstring(),
     # suggested by CMSSW for form EMTF errors
-    inputCommands = cms.untracked.vstring ("drop l1tEMTFHitExtras_simEmtfDigis_CSC_HLT",
+    inputCommands = cms.untracked.vstring (
+                                           "keep *",
+                                           "drop l1tEMTFHitExtras_simEmtfDigis_CSC_HLT",
                                            "drop l1tEMTFHitExtras_simEmtfDigis_RPC_HLT",
                                            "drop l1tEMTFTrackExtras_simEmtfDigis__HLT",
                                            )
