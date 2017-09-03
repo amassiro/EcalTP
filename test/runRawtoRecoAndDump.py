@@ -40,7 +40,13 @@ process.maxEvents = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(options.inputFiles),
-    secondaryFileNames = cms.untracked.vstring()
+    secondaryFileNames = cms.untracked.vstring(),
+    # suggested by CMSSW for form EMTF errors
+    inputCommands = cms.untracked.vstring ("drop l1tEMTFHitExtras_simEmtfDigis_CSC_HLT",
+                                           "drop l1tEMTFHitExtras_simEmtfDigis_RPC_HLT",
+                                           "drop l1tEMTFTrackExtras_simEmtfDigis__HLT",
+                                           )
+                                           
 )
 
 process.options = cms.untracked.PSet(
@@ -61,6 +67,11 @@ process.configurationMetadata = cms.untracked.PSet(
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v10', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v7_forTEST_EGM_JetMET', '')
+
+
+
+
 
 # Path and EndPath definitions
 process.raw2digi_step = cms.Path(process.RawToDigi)
