@@ -38,6 +38,14 @@ Run
     cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170901.root   maxEvents=-1   outputFile=rawtoworld-nugun.FIXED.root
 
         
+    Fixed MC - A     EcalTPGLutGroup_2017_mc 
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170904A.root   maxEvents=-1   outputFile=rawtoworld-nugun.FIXED.A.root
+    Fixed MC - B     EcalTPGLutIdMap_2017_mc
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170904B.root   maxEvents=-1   outputFile=rawtoworld-nugun.FIXED.B.root
+    Fixed MC - C     EcalTPGPhysicsConst_2017_mc
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170904C.root   maxEvents=-1   outputFile=rawtoworld-nugun.FIXED.C.root
+    
+    
     
     
     cp /eos/cms/store/relval/CMSSW_9_3_0_pre4/RelValSingleElectronPt10/GEN-SIM-DIGI-RAW/93X_mc2017_realistic_v1-v1/00000/D438441B-4786-E711-A65E-0CC47A4D7694.root /tmp/amassiro/
@@ -56,6 +64,9 @@ Run
     
     
     TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1", "colz");
+    
+    
     tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,10)", "TPonlineETADC>-1", "colz");
     
     
