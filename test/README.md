@@ -116,4 +116,8 @@ Run
     
     
     
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("TPOfflineEnergy/TPonlineETADC>>h(100,0,3)", "TPonlineETADC>0 && TPOfflineEnergy>0", "colz");
+    tree ->Draw("TPOfflineEnergy/TPonlineETADC", "TPonlineETADC>0 && TPOfflineEnergy>0", "colz");
+    tree ->Draw("TPOfflineEnergy", "TPOfflineEnergy>0", "colz");
     

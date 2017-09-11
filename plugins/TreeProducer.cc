@@ -159,6 +159,8 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       float _TPonlineEnergyADC[4032];
       float _TPonlineEnergyTowerADC[4032];
       float _TPonlineETADC[4032];
+      float _TPOfflineEnergy[4032];
+      int   _TPOfflineNxtals[4032];
       
       float _TPEmuflag[4032];
       float _TPEmuonlineEnergyADC[4032];
@@ -215,6 +217,9 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    outTree->Branch("TPonlineEnergyADC",                _TPonlineEnergyADC,             "TPonlineEnergyADC[4032]/F");
    outTree->Branch("TPonlineEnergyTowerADC",       _TPonlineEnergyTowerADC,    "TPonlineEnergyTowerADC[4032]/F");
    outTree->Branch("TPonlineETADC",       _TPonlineETADC,    "TPonlineETADC[4032]/F");
+   outTree->Branch("TPOfflineEnergy",     _TPOfflineEnergy,  "TPOfflineEnergy[4032]/F");
+   outTree->Branch("TPOfflineNxtals",     _TPOfflineNxtals,  "TPOfflineNxtals[4032]/I");
+   
    
    
    outTree->Branch("TPEmuflag",                _TPEmuflag,             "TPEmuflag[4032]/F");
@@ -335,6 +340,8 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     _TPonlineEnergyADC[iTP] = -99;
     _TPonlineEnergyTowerADC[iTP] = -99;
     _TPonlineETADC[iTP] = -99;
+    _TPOfflineEnergy[iTP] = -99;
+    _TPOfflineNxtals[iTP] = -99;
   }
   
 //   std::cout << " tphandle.product()->size() = " << tphandle.product()->size() << std::endl;
@@ -421,7 +428,6 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       
       
       
-    }
     
 //     tE.iphi_ = TPtowid.iphi() ;
 //     tE.ieta_ = TPtowid.ieta() ;
@@ -430,6 +436,44 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //     tE.twrADC = (d[0].raw()&0xff) ;
 //     tE.sFGVB = (d[0].sFGVB());
 //     mapTower[TPtowid] = tE ;
+    
+    
+    
+      //----
+      //---- loop over the crystals and if the TT is matching the one under exam, 
+      //---- save the energy and count the number of crystals associated with the TT
+      //----
+      
+      int thisTowerHI = towerId.hashedIndex();
+      float numberXtal  = 0;
+      float towerEnergy = 0.;
+      if(towerId.subDet() == EcalBarrel) {
+        for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
+          int thisXtalTowidHI = (EBDetId(itrechit->id()).tower()).hashedIndex();
+          if (thisXtalTowidHI==thisTowerHI) {
+            numberXtal++;
+            towerEnergy = towerEnergy + itrechit->amplitude();
+          }
+        }
+        _TPOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
+        _TPOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
+      }
+      else {
+        for (EcalUncalibratedRecHitCollection::const_iterator itrechit = eerechits->begin(); itrechit != eerechits->end(); itrechit++ ) {
+          
+          int thisXtalTowidHI = EcalTrigTowerDetId( EEDetId(itrechit->id()).zside(),EcalEndcap, EEDetId(itrechit->id()).ix(), EEDetId(itrechit->id()).iy()  );
+          //             int thisXtalTowidHI = (EEDetId(itrechit->id()).tower()).hashedIndex();
+          if (thisXtalTowidHI==thisTowerHI) {
+            numberXtal++;
+            towerEnergy = towerEnergy + itrechit->amplitude();
+          }
+        }
+        _TPOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
+        _TPOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
+        //         std::cout << "# xtals = " << numberXtal << ", towerEnergy = " << towerEnergy << std::endl;
+      }
+      
+    }
     
   }
   
