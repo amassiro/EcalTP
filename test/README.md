@@ -47,7 +47,7 @@ Run
     
     
     
-    
+    /RelValZEE_13/CMSSW_9_2_9-PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/GEN-SIM-DIGI-RAW-HLTDEBUG
     
 /store/relval/CMSSW_9_2_9/RelValZEE_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/0A050AAC-D193-E711-AE72-0025905A6066.root
 /store/relval/CMSSW_9_2_9/RelValZEE_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/0C197E9F-D193-E711-A52D-0025905A610A.root
@@ -64,7 +64,8 @@ Run
 
 
 
-
+    /RelValNuGun/CMSSW_9_2_9-PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/GEN-SIM-DIGI-RAW-HLTDEBUG
+ 
 /store/relval/CMSSW_9_2_9/RelValNuGun/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/1C43A8DF-9693-E711-ACD8-0025905B8586.root
 /store/relval/CMSSW_9_2_9/RelValNuGun/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/2C580A87-CC93-E711-A14F-0025905A610A.root
 /store/relval/CMSSW_9_2_9/RelValNuGun/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/4843B37C-D193-E711-8DB8-0CC47A4D7616.root
