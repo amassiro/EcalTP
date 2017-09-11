@@ -139,6 +139,9 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       
       edm::EDGetTokenT<EcalUncalibratedRecHitCollection> _token_ebrechits;
       edm::EDGetTokenT<EcalUncalibratedRecHitCollection> _token_eerechits;
+
+      edm::EDGetTokenT<EcalRecHitCollection> _token_ebrechits_calib;
+      edm::EDGetTokenT<EcalRecHitCollection> _token_eerechits_calib;
       
       edm::EDGetTokenT<EcalTrigPrimDigiCollection> _token_tpCollection;
       edm::EDGetTokenT<EcalTrigPrimDigiCollection> _token_tpEmuCollection;
@@ -161,6 +164,8 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       float _TPonlineETADC[4032];
       float _TPOfflineEnergy[4032];
       int   _TPOfflineNxtals[4032];
+      float _TPCalibOfflineEnergy[4032];
+      int   _TPCalibOfflineNxtals[4032];
       
       float _TPEmuflag[4032];
       float _TPEmuonlineEnergyADC[4032];
@@ -195,6 +200,10 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    _token_ebrechits = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEBCollection"));
    _token_eerechits = consumes<EcalUncalibratedRecHitCollection>(iConfig.getParameter<edm::InputTag>("EcalUncalibRecHitsEECollection"));
    
+   _token_ebrechits_calib = consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("EBRecHitCollectionLabel"));
+   _token_eerechits_calib = consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("EERecHitCollectionLabel"));
+   
+   
    _token_tpCollection    = consumes<EcalTrigPrimDigiCollection>(iConfig.getParameter<edm::InputTag>("TPCollection")) ;
    _token_tpEmuCollection = consumes<EcalTrigPrimDigiCollection>(iConfig.getParameter<edm::InputTag>("TPEmuCollection")) ;
    
@@ -220,6 +229,8 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    outTree->Branch("TPOfflineEnergy",     _TPOfflineEnergy,  "TPOfflineEnergy[4032]/F");
    outTree->Branch("TPOfflineNxtals",     _TPOfflineNxtals,  "TPOfflineNxtals[4032]/I");
    
+   outTree->Branch("TPCalibOfflineEnergy",     _TPCalibOfflineEnergy,  "TPCalibOfflineEnergy[4032]/F");
+   outTree->Branch("TPCalibOfflineNxtals",     _TPCalibOfflineNxtals,  "TPCalibOfflineNxtals[4032]/I");
    
    
    outTree->Branch("TPEmuflag",                _TPEmuflag,             "TPEmuflag[4032]/F");
@@ -283,6 +294,19 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   eerechits = eerechithandle.product();
   
   
+
+  
+  edm::Handle<EcalRecHitCollection> calib_ebrechithandle;
+  const EcalRecHitCollection *calib_ebrechits = NULL;
+  edm::Handle<EcalRecHitCollection> calib_eerechithandle;
+  const EcalRecHitCollection *calib_eerechits = NULL;
+  
+  iEvent.getByToken(_token_ebrechits_calib,calib_ebrechithandle);
+  calib_ebrechits = calib_ebrechithandle.product();
+  iEvent.getByToken(_token_eerechits_calib,calib_eerechithandle);
+  calib_eerechits = calib_eerechithandle.product();
+  
+
   
   //---- fill information
   
@@ -342,6 +366,8 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     _TPonlineETADC[iTP] = -99;
     _TPOfflineEnergy[iTP] = -99;
     _TPOfflineNxtals[iTP] = -99;
+    _TPCalibOfflineEnergy[iTP] = -99;
+    _TPCalibOfflineNxtals[iTP] = -99;
   }
   
 //   std::cout << " tphandle.product()->size() = " << tphandle.product()->size() << std::endl;
@@ -472,6 +498,39 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
         _TPOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
         //         std::cout << "# xtals = " << numberXtal << ", towerEnergy = " << towerEnergy << std::endl;
       }
+      
+      
+      //--------------------------------
+      //---- now calibrated rechits ----
+      numberXtal  = 0;
+      towerEnergy = 0.;
+      if(towerId.subDet() == EcalBarrel) {
+        for (EcalRecHitCollection::const_iterator itrechit = calib_ebrechits->begin(); itrechit != calib_ebrechits->end(); itrechit++ ) {
+          int thisXtalTowidHI = (EBDetId(itrechit->id()).tower()).hashedIndex();
+          if (thisXtalTowidHI==thisTowerHI) {
+            numberXtal++;
+            towerEnergy = towerEnergy + itrechit->energy();
+          }
+        }
+        _TPCalibOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
+        _TPCalibOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
+      }
+      else {
+        for (EcalRecHitCollection::const_iterator itrechit = calib_eerechits->begin(); itrechit != calib_eerechits->end(); itrechit++ ) {
+          
+          int thisXtalTowidHI = EcalTrigTowerDetId( EEDetId(itrechit->id()).zside(),EcalEndcap, EEDetId(itrechit->id()).ix(), EEDetId(itrechit->id()).iy()  );
+          if (thisXtalTowidHI==thisTowerHI) {
+            numberXtal++;
+            towerEnergy = towerEnergy + itrechit->energy();
+          }
+        }
+        _TPCalibOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
+        _TPCalibOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
+      }
+      
+      
+      
+      
       
     }
     
