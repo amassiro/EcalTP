@@ -87,7 +87,15 @@ Run
 
     cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/relval/CMSSW_9_2_9/RelValNuGun/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/54F5AEB3-A493-E711-AC7F-0025905B8586.root   maxEvents=-1   outputFile=rawtoworld-nugun.relval.root
     
+    
+    
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170911.root   maxEvents=-1   outputFile=rawtoworld-nugun.LCfewFB.root
+    
 
+
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/relval/CMSSW_9_3_0_pre1/RelValNuGun/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_v7-v1/00000/08A6C93D-8761-E711-9FD1-003048FFCBB2.root   maxEvents=-1   outputFile=rawtoworld-nugun.badOldTag.root
+
+    
 
 
 
@@ -107,6 +115,24 @@ Run
     
     
     
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("TPflag*(TPflag<2)+(TPflag>=2)*2>>h(3,0,3", "TPonlineETADC>-1", "colz");
+    h->GetXaxis()->SetTitle("TP flag");
+    h->Scale (1./h->Integral());
+    h->SetLineWidth(2);
+    h->Draw("hist");
+    h->GetBinContent (1)
+    h->GetBinContent (2)
+    h->GetBinContent (3)
+    
+    
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("TPCalibOfflineET/TPonlineETADC", "TPonlineETADC>0 && TPCalibOfflineET>0", "colz");
+    tree ->Draw("TPCalibOfflineET/TPonlineETADC", "TPonlineETADC>0 && TPCalibOfflineET>2", "colz");
+
+    tree ->Draw("TPCalibOfflineEnergy/TPonlineETADC", "TPonlineETADC>0 && TPCalibOfflineEnergy>0", "colz");
+    tree ->Draw("TPCalibOfflineEnergy/TPCalibOfflineET", "TPonlineETADC>0 && TPCalibOfflineEnergy>0", "colz");
+
     
     TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
     tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1", "colz");

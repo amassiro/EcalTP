@@ -163,8 +163,10 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       float _TPonlineEnergyTowerADC[4032];
       float _TPonlineETADC[4032];
       float _TPOfflineEnergy[4032];
+      float _TPOfflineET[4032];
       int   _TPOfflineNxtals[4032];
       float _TPCalibOfflineEnergy[4032];
+      float _TPCalibOfflineET[4032];
       int   _TPCalibOfflineNxtals[4032];
       
       float _TPEmuflag[4032];
@@ -227,9 +229,11 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    outTree->Branch("TPonlineEnergyTowerADC",       _TPonlineEnergyTowerADC,    "TPonlineEnergyTowerADC[4032]/F");
    outTree->Branch("TPonlineETADC",       _TPonlineETADC,    "TPonlineETADC[4032]/F");
    outTree->Branch("TPOfflineEnergy",     _TPOfflineEnergy,  "TPOfflineEnergy[4032]/F");
+   outTree->Branch("TPOfflineET",     _TPOfflineET,  "TPOfflineET[4032]/F");
    outTree->Branch("TPOfflineNxtals",     _TPOfflineNxtals,  "TPOfflineNxtals[4032]/I");
    
    outTree->Branch("TPCalibOfflineEnergy",     _TPCalibOfflineEnergy,  "TPCalibOfflineEnergy[4032]/F");
+   outTree->Branch("TPCalibOfflineET",     _TPCalibOfflineET,  "TPCalibOfflineET[4032]/F");
    outTree->Branch("TPCalibOfflineNxtals",     _TPCalibOfflineNxtals,  "TPCalibOfflineNxtals[4032]/I");
    
    
@@ -365,8 +369,10 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     _TPonlineEnergyTowerADC[iTP] = -99;
     _TPonlineETADC[iTP] = -99;
     _TPOfflineEnergy[iTP] = -99;
+    _TPOfflineET[iTP] = -99;
     _TPOfflineNxtals[iTP] = -99;
     _TPCalibOfflineEnergy[iTP] = -99;
+    _TPCalibOfflineET[iTP] = -99;
     _TPCalibOfflineNxtals[iTP] = -99;
   }
   
@@ -393,6 +399,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   double lsb10bitsEE(eeItr == physMap.end() ? 0. : eeItr->second.EtSat / 1024.);
   
   
+  edm::ESHandle<CaloGeometry> pGeometry;
+  iSetup.get<CaloGeometryRecord>().get(pGeometry);
+  const CaloGeometry *geometry = pGeometry.product();
   
   
   
@@ -473,15 +482,23 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       int thisTowerHI = towerId.hashedIndex();
       float numberXtal  = 0;
       float towerEnergy = 0.;
+      float towerET = 0.;
       if(towerId.subDet() == EcalBarrel) {
         for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
           int thisXtalTowidHI = (EBDetId(itrechit->id()).tower()).hashedIndex();
           if (thisXtalTowidHI==thisTowerHI) {
             numberXtal++;
             towerEnergy = towerEnergy + itrechit->amplitude();
+            
+            GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
+            float theta = mycell.theta();
+            towerET = towerET + itrechit->amplitude() * sin (theta);
+            
+            
           }
         }
         _TPOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
+        _TPOfflineET     [ TPtowid.hashedIndex() ] = towerET;
         _TPOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
       }
       else {
@@ -492,9 +509,15 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
           if (thisXtalTowidHI==thisTowerHI) {
             numberXtal++;
             towerEnergy = towerEnergy + itrechit->amplitude();
+
+            GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
+            float theta = mycell.theta();
+            towerET = towerET + itrechit->amplitude() * sin (theta);
+            
           }
         }
         _TPOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
+        _TPOfflineET     [ TPtowid.hashedIndex() ] = towerET;
         _TPOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
         //         std::cout << "# xtals = " << numberXtal << ", towerEnergy = " << towerEnergy << std::endl;
       }
@@ -504,15 +527,22 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       //---- now calibrated rechits ----
       numberXtal  = 0;
       towerEnergy = 0.;
+      towerET     = 0.;
       if(towerId.subDet() == EcalBarrel) {
         for (EcalRecHitCollection::const_iterator itrechit = calib_ebrechits->begin(); itrechit != calib_ebrechits->end(); itrechit++ ) {
           int thisXtalTowidHI = (EBDetId(itrechit->id()).tower()).hashedIndex();
           if (thisXtalTowidHI==thisTowerHI) {
             numberXtal++;
             towerEnergy = towerEnergy + itrechit->energy();
+            
+            GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
+            float theta = mycell.theta();
+            towerET = towerET + itrechit->energy() * sin (theta);
+            
           }
         }
         _TPCalibOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
+        _TPCalibOfflineET     [ TPtowid.hashedIndex() ] = towerET;
         _TPCalibOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
       }
       else {
@@ -522,9 +552,15 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
           if (thisXtalTowidHI==thisTowerHI) {
             numberXtal++;
             towerEnergy = towerEnergy + itrechit->energy();
+            
+            GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
+            float theta = mycell.theta();
+            towerET = towerET + itrechit->energy() * sin (theta);
+            
           }
         }
         _TPCalibOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
+        _TPCalibOfflineET     [ TPtowid.hashedIndex() ] = towerET;
         _TPCalibOfflineNxtals [ TPtowid.hashedIndex() ] = numberXtal;
       }
       
