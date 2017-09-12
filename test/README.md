@@ -1,3 +1,18 @@
+Plot
+====
+
+
+    r99t rawtoworld-zee.relval.root  rawtoworld-zeedata.root            drawCompare.cxx
+
+    r99t rawtoworld-nugun.badOldTag.root  rawtoworld-nugun.LCfewFB.root      drawCompareOldNew.cxx
+    r99t rawtoworld-nugun.relval.root  rawtoworld-nugun.LCfewFB.root      drawCompareOldNew.cxx
+    
+    
+    r99t rawtoworld-nugun.relval.root  rawtoworld-nugun.badOldTag.root      drawCompareOldNew.cxx
+    
+    
+    
+
 Run
 ====
 
@@ -90,6 +105,7 @@ Run
     
     
     cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170911.root   maxEvents=-1   outputFile=rawtoworld-nugun.LCfewFB.root
+    cmsRun runRawtoRecoAndDumpNewTag.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170911.root   maxEvents=-1   outputFile=rawtoworld-nugun.LCfewFB.root
     
 
 

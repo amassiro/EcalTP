@@ -72,6 +72,14 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v10'
 #process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v7_forTEST_EGM_JetMET', '')
 
 
+#process.GlobalTag = GlobalTag(process.GlobalTag, '90X_upgrade2017_realistic_v20', '')
+
+
+
+
+
+
+
 
 
 
