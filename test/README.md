@@ -6,9 +6,10 @@ Plot
 
     r99t rawtoworld-nugun.badOldTag.root  rawtoworld-nugun.LCfewFB.root      drawCompareOldNew.cxx
     r99t rawtoworld-nugun.relval.root  rawtoworld-nugun.LCfewFB.root      drawCompareOldNew.cxx
+    r99t rawtoworld-nugun.relval.root  rawtoworld-nugun.LCfewFB.bigfile.root      drawCompareOldNew.cxx
     
     
-    r99t rawtoworld-nugun.relval.root  rawtoworld-nugun.badOldTag.root      drawCompareOldNew.cxx
+    r99t  rawtoworld-nugun.badOldTag.root     rawtoworld-nugun.relval.root     drawCompareOldNew.cxx
     
     
     

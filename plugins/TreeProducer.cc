@@ -491,9 +491,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             towerEnergy = towerEnergy + itrechit->amplitude();
             
             GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
-            float theta = mycell.theta();
-            towerET = towerET + itrechit->amplitude() * sin (theta);
-            
+//             float theta = mycell.theta();
+//             towerET = towerET + itrechit->amplitude() * sin (theta);
+            towerET = towerET + itrechit->amplitude() * mycell.perp()/mycell.mag();
             
           }
         }
@@ -511,9 +511,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             towerEnergy = towerEnergy + itrechit->amplitude();
 
             GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
-            float theta = mycell.theta();
-            towerET = towerET + itrechit->amplitude() * sin (theta);
-            
+//             float theta = mycell.theta();
+//             towerET = towerET + itrechit->amplitude() * sin (theta);
+            towerET = towerET + itrechit->amplitude() * mycell.perp()/mycell.mag();
           }
         }
         _TPOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
@@ -536,8 +536,10 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             towerEnergy = towerEnergy + itrechit->energy();
             
             GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
-            float theta = mycell.theta();
-            towerET = towerET + itrechit->energy() * sin (theta);
+//             float theta = mycell.theta();
+//             towerET = towerET + itrechit->energy() * sin (theta);
+            towerET = towerET + itrechit->energy() * mycell.perp()/mycell.mag();
+            
             
           }
         }
@@ -554,9 +556,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             towerEnergy = towerEnergy + itrechit->energy();
             
             GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
-            float theta = mycell.theta();
-            towerET = towerET + itrechit->energy() * sin (theta);
-            
+//             float theta = mycell.theta();
+//             towerET = towerET + itrechit->energy() * sin (theta);
+            towerET = towerET + itrechit->energy() * mycell.perp()/mycell.mag();      
           }
         }
         _TPCalibOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
