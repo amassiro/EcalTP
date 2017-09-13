@@ -92,6 +92,8 @@
 #include "CondFormats/DataRecord/interface/EcalTPGPhysicsConstRcd.h"
 
 
+#include "Geometry/CaloTopology/interface/EcalTrigTowerConstituentsMap.h"
+
 
 
 
@@ -162,6 +164,8 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       float _TPonlineEnergyADC[4032];
       float _TPonlineEnergyTowerADC[4032];
       float _TPonlineETADC[4032];
+      int   _TPonlineIeta[4032];
+      int   _TPonlineIphi[4032];
       float _TPOfflineEnergy[4032];
       float _TPOfflineET[4032];
       int   _TPOfflineNxtals[4032];
@@ -231,6 +235,9 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    outTree->Branch("TPOfflineEnergy",     _TPOfflineEnergy,  "TPOfflineEnergy[4032]/F");
    outTree->Branch("TPOfflineET",     _TPOfflineET,  "TPOfflineET[4032]/F");
    outTree->Branch("TPOfflineNxtals",     _TPOfflineNxtals,  "TPOfflineNxtals[4032]/I");
+   outTree->Branch("TPonlineIeta",     _TPonlineIeta,  "TPonlineIeta[4032]/I");
+   outTree->Branch("TPonlineIphi",     _TPonlineIphi,  "TPonlineIphi[4032]/I");
+   
    
    outTree->Branch("TPCalibOfflineEnergy",     _TPCalibOfflineEnergy,  "TPCalibOfflineEnergy[4032]/F");
    outTree->Branch("TPCalibOfflineET",     _TPCalibOfflineET,  "TPCalibOfflineET[4032]/F");
@@ -374,6 +381,8 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
     _TPCalibOfflineEnergy[iTP] = -99;
     _TPCalibOfflineET[iTP] = -99;
     _TPCalibOfflineNxtals[iTP] = -99;
+    _TPonlineIeta[iTP] = -99;
+    _TPonlineIphi[iTP] = -99;
   }
   
 //   std::cout << " tphandle.product()->size() = " << tphandle.product()->size() << std::endl;
@@ -404,6 +413,10 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   const CaloGeometry *geometry = pGeometry.product();
   
   
+  edm::ESHandle<EcalTrigTowerConstituentsMap> eTTmap;
+  iSetup.get<IdealGeometryRecord>().get(eTTmap);
+  
+  
   
   for (unsigned int i=0;i<tphandle.product()->size();i++) {
     EcalTriggerPrimitiveDigi d = (*(tphandle.product()))[i];
@@ -431,6 +444,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       _TPonlineEnergyTowerADC[ TPtowid.hashedIndex() ] = (d[0].raw() & 0xff);   //---- 0xff = 255
 //       _TPonlineETADC[ TPtowid.hashedIndex() ] = (d[0].compressedEt()); 
       
+      
+      _TPonlineIeta[ TPtowid.hashedIndex() ] = TPtowid.ieta();
+      _TPonlineIphi[ TPtowid.hashedIndex() ] = TPtowid.iphi();
       
       
       EcalTrigTowerDetId const& towerId(d.id());
@@ -503,8 +519,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       }
       else {
         for (EcalUncalibratedRecHitCollection::const_iterator itrechit = eerechits->begin(); itrechit != eerechits->end(); itrechit++ ) {
-          
-          int thisXtalTowidHI = EcalTrigTowerDetId( EEDetId(itrechit->id()).zside(),EcalEndcap, EEDetId(itrechit->id()).ix(), EEDetId(itrechit->id()).iy()  );
+          const EcalTrigTowerDetId towid = (*eTTmap).towerOf( EEDetId(itrechit->id()) );
+          int thisXtalTowidHI = towid.hashedIndex();
+//           int thisXtalTowidHI = EcalTrigTowerDetId( EEDetId(itrechit->id()).zside(),EcalEndcap, EEDetId(itrechit->id()).ix(), EEDetId(itrechit->id()).iy()  ).hashedIndex();
           //             int thisXtalTowidHI = (EEDetId(itrechit->id()).tower()).hashedIndex();
           if (thisXtalTowidHI==thisTowerHI) {
             numberXtal++;
@@ -549,8 +566,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       }
       else {
         for (EcalRecHitCollection::const_iterator itrechit = calib_eerechits->begin(); itrechit != calib_eerechits->end(); itrechit++ ) {
-          
-          int thisXtalTowidHI = EcalTrigTowerDetId( EEDetId(itrechit->id()).zside(),EcalEndcap, EEDetId(itrechit->id()).ix(), EEDetId(itrechit->id()).iy()  );
+          const EcalTrigTowerDetId towid = (*eTTmap).towerOf( EEDetId(itrechit->id()) );
+          int thisXtalTowidHI = towid.hashedIndex();
+//           int thisXtalTowidHI = EcalTrigTowerDetId( EEDetId(itrechit->id()).zside(),EcalEndcap, EEDetId(itrechit->id()).ix(), EEDetId(itrechit->id()).iy()  ).hashedIndex();
           if (thisXtalTowidHI==thisTowerHI) {
             numberXtal++;
             towerEnergy = towerEnergy + itrechit->energy();

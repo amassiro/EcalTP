@@ -5,12 +5,12 @@
   TTree* tre1 = (TTree*) _file1->Get("TreeProducer/tree");
   
   TCanvas* ccRatio = new TCanvas ("ccRatio", "", 800, 600);
-  tree->Draw("TPCalibOfflineET/TPonlineETADC>> h4(100, 0, 3)", "TPonlineETADC>0 && TPCalibOfflineET>0 && TPCalibOfflineET/TPonlineETADC<10", "colz");
+  tree->Draw("TPCalibOfflineET/TPonlineETADC>> h4(30, 0.5, 1.7)", "TPonlineETADC>0 && TPCalibOfflineET>5 && abs(TPonlineIeta)<=17 && TPCalibOfflineET/TPonlineETADC<10", "colz");
   h4->GetXaxis()->SetTitle("E_{T} offline / E_{T} TP");
   h4->Scale (1./h4->Integral());
   h4->SetLineWidth(2);
 
-  tre1->Draw("TPCalibOfflineET/TPonlineETADC>> h4_1(100, 0, 3)", "TPonlineETADC>0 && TPCalibOfflineET>0 && TPCalibOfflineET/TPonlineETADC<10", "colz");
+  tre1->Draw("TPCalibOfflineET/TPonlineETADC>> h4_1(30, 0.5, 1.7)", "TPonlineETADC>0 && TPCalibOfflineET>5 && abs(TPonlineIeta)<=17 && TPCalibOfflineET/TPonlineETADC<10", "colz");
   h4_1->GetXaxis()->SetTitle("E_{T} offline / E_{T} TP");
   h4_1->SetLineWidth(2);
   h4_1->Scale (1./h4_1->Integral());
@@ -28,12 +28,12 @@
   
   
   TCanvas* ccRatioHigh = new TCanvas ("ccRatioHigh", "", 800, 600);
-  tree->Draw("TPCalibOfflineET/TPonlineETADC>> h3(100, 0, 2)", "TPonlineETADC>0 && TPCalibOfflineET>5 && TPCalibOfflineET/TPonlineETADC<10", "colz");
+  tree->Draw("TPCalibOfflineET/TPonlineETADC>> h3(100, 0, 1.7)", "TPonlineETADC>0 && TPCalibOfflineET>5 && TPCalibOfflineET/TPonlineETADC<10", "colz");
   h3->GetXaxis()->SetTitle("E_{T} offline / E_{T} TP");
   h3->SetLineWidth(2);
   h3->Scale (1./h3->Integral());
   
-  tre1->Draw("TPCalibOfflineET/TPonlineETADC>> h3_1(100, 0, 2)", "TPonlineETADC>0 && TPCalibOfflineET>5 && TPCalibOfflineET/TPonlineETADC<10", "colz");
+  tre1->Draw("TPCalibOfflineET/TPonlineETADC>> h3_1(100, 0, 1.7)", "TPonlineETADC>0 && TPCalibOfflineET>5 && TPCalibOfflineET/TPonlineETADC<10", "colz");
   h3_1->GetXaxis()->SetTitle("E_{T} offline / E_{T} TP");
   h3_1->SetLineWidth(2);
   h3_1->Scale (1./h3_1->Integral());
