@@ -5,12 +5,12 @@
   TTree* tre1 = (TTree*) _file1->Get("TreeProducer/tree");
   
   TCanvas* ccRatio = new TCanvas ("ccRatio", "", 800, 600);
-  tree->Draw("TPCalibOfflineET/TPonlineETADC>> h4(30, 0.5, 1.7)", "TPonlineETADC>0 && TPCalibOfflineET>5 && abs(TPonlineIeta)<=17 && TPCalibOfflineET/TPonlineETADC<10", "colz");
+  tree->Draw("TPCalibOfflineET/TPonlineETADC>> h4(30, 0.5, 3.0)", "TPonlineETADC>0 && TPCalibOfflineET>5 && abs(TPonlineIeta)>17 && TPCalibOfflineET/TPonlineETADC<10", "colz");
   h4->GetXaxis()->SetTitle("E_{T} offline / E_{T} TP");
   h4->Scale (1./h4->Integral());
   h4->SetLineWidth(2);
 
-  tre1->Draw("TPCalibOfflineET/TPonlineETADC>> h4_1(30, 0.5, 1.7)", "TPonlineETADC>0 && TPCalibOfflineET>5 && abs(TPonlineIeta)<=17 && TPCalibOfflineET/TPonlineETADC<10", "colz");
+  tre1->Draw("TPCalibOfflineET/TPonlineETADC>> h4_1(30, 0.5, 3.0)", "TPonlineETADC>0 && TPCalibOfflineET>5 && abs(TPonlineIeta)>17 && TPCalibOfflineET/TPonlineETADC<10", "colz");
   h4_1->GetXaxis()->SetTitle("E_{T} offline / E_{T} TP");
   h4_1->SetLineWidth(2);
   h4_1->Scale (1./h4_1->Integral());
