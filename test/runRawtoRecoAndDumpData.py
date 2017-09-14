@@ -145,6 +145,30 @@ process.TFileService = cms.Service("TFileService",
 )
 
 
+
+#
+# weights rechits 
+#
+process.load('RecoLocalCalo.EcalRecProducers.ecalUncalibRecHit_cfi')
+process.ecalUncalibRecHit.EBdigiCollection = cms.InputTag("ecalDigis","ebDigis")
+process.ecalUncalibRecHit.EEdigiCollection = cms.InputTag("ecalDigis","eeDigis")
+process.weights = cms.Path(process.ecalUncalibRecHit)
+
+
+
+#
+# change the default into weights
+#
+process.ecalRecHit.EEuncalibRecHitCollection = cms.InputTag("ecalUncalibRecHit","EcalUncalibRecHitsEE")
+process.ecalRecHit.EBuncalibRecHitCollection = cms.InputTag("ecalUncalibRecHit","EcalUncalibRecHitsEB")
+#
+#
+#
+
+
+
+
+
 process.TreeProducer = cms.EDAnalyzer('TreeProducer',
 
                            EBDigiCollection = cms.InputTag("ecalDigis","ebDigis"),
@@ -152,10 +176,15 @@ process.TreeProducer = cms.EDAnalyzer('TreeProducer',
                            #EBDigiCollection = cms.InputTag("selectDigi","selectedEcalEBDigiCollection"),
                            #EEDigiCollection = cms.InputTag("selectDigi","selectedEcalEEDigiCollection"),
 
-                           EcalUncalibRecHitsEBCollection = cms.InputTag("ecalMultiFitUncalibRecHit","EcalUncalibRecHitsEB"),
-                           EcalUncalibRecHitsEECollection = cms.InputTag("ecalMultiFitUncalibRecHit","EcalUncalibRecHitsEE"),
+                           #EcalUncalibRecHitsEBCollection = cms.InputTag("ecalMultiFitUncalibRecHit","EcalUncalibRecHitsEB"),
+                           #EcalUncalibRecHitsEECollection = cms.InputTag("ecalMultiFitUncalibRecHit","EcalUncalibRecHitsEE"),
+                           
                            #EcalUncalibRecHitsEBCollection = cms.InputTag("ecalRecHit",  "EcalRecHitsEB"),
                            #EcalUncalibRecHitsEECollection = cms.InputTag("ecalRecHit",  "EcalRecHitsEE"),
+
+                           EcalUncalibRecHitsEBCollection = cms.InputTag("ecalUncalibRecHit","EcalUncalibRecHitsEB"),
+                           EcalUncalibRecHitsEECollection = cms.InputTag("ecalUncalibRecHit","EcalUncalibRecHitsEE"),
+
 
                            EBRecHitCollectionLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
                            EERecHitCollectionLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
@@ -193,8 +222,6 @@ process = customizeHLTforCMSSW(process,"GRun")
 process.options.allowUnscheduled = cms.untracked.bool(True)
 
 
-
-
 # Schedule definition
 process.schedule = cms.Schedule(
           process.raw2digi_step,
@@ -202,6 +229,7 @@ process.schedule = cms.Schedule(
           process.ecalDigis_step,
           #process.multifit
           process.ecalTriggerPrimitiveDigis_step,
+          process.weights,
           process.TreeProducer_step
           )
   

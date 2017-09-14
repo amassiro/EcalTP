@@ -3,12 +3,13 @@ Plot
 
 
     r99t rawtoworld-zee.relval.root  rawtoworld-zeedata.root            drawCompare.cxx
+    r99t rawtoworld-zee.relval.OLD.root  rawtoworld-zeedata.root            drawCompare.cxx
 
+    
     r99t rawtoworld-nugun.badOldTag.root  rawtoworld-nugun.LCfewFB.root      drawCompareOldNew.cxx
     r99t rawtoworld-nugun.relval.root  rawtoworld-nugun.LCfewFB.root      drawCompareOldNew.cxx
     r99t rawtoworld-nugun.relval.root  rawtoworld-nugun.LCfewFB.bigfile.root      drawCompareOldNew.cxx
-    
-    
+        
     r99t  rawtoworld-nugun.badOldTag.root     rawtoworld-nugun.relval.root     drawCompareOldNew.cxx
     
     
@@ -23,8 +24,21 @@ Plot
     xrdcp root://cms-xrd-global.cern.ch//store/data/Run2017B/DoubleEG/RAW-RECO/ZElectron-PromptReco-v1/000/297/047/00000/1CA3695B-6456-E711-A8AE-02163E0140DA.root /tmp/amassiro/
     
     cmsRun runRawtoRecoAndDumpData.py             inputFiles=file:/tmp/amassiro/1CA3695B-6456-E711-A8AE-02163E0140DA.root   maxEvents=-1   outputFile=rawtoworld-zeedata.root
+    cmsRun runRawtoRecoAndDumpData.py             inputFiles=file:/tmp/amassiro/1CA3695B-6456-E711-A8AE-02163E0140DA.root   maxEvents=-1   outputFile=rawtoworld-zeedata.weights.root
 
 
+    /DoubleEG/Run2017C-ZElectron-PromptReco-v1/RAW-RECO
+    xrdcp  root://cms-xrd-global.cern.ch//store/data/Run2017C/DoubleEG/RAW-RECO/ZElectron-PromptReco-v1/000/299/368/00000/1CAF1B6A-856D-E711-8719-02163E011F58.root  /tmp/amassiro/
+    cmsRun runRawtoRecoAndDumpData.py             inputFiles=file:/tmp/amassiro/1CAF1B6A-856D-E711-8719-02163E011F58.root   maxEvents=-1   outputFile=rawtoworld-zeedata.weights.RunC.root
+    
+    
+    /DoubleEG/Run2017D-ZElectron-PromptReco-v1/RAW-RECO
+    xrdcp  root://cms-xrd-global.cern.ch//store/data/Run2017D/DoubleEG/RAW-RECO/ZElectron-PromptReco-v1/000/302/031/00000/0C65658E-1D8F-E711-9CB8-02163E0128F2.root   /tmp/amassiro/
+    cmsRun runRawtoRecoAndDumpData.py             inputFiles=file:/tmp/amassiro/0C65658E-1D8F-E711-9CB8-02163E0128F2.root   maxEvents=-1   outputFile=rawtoworld-zeedata.weights.RunD.root
+    
+    
+    
+    
     cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/relval/CMSSW_9_3_0_pre1/RelValNuGun/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_v7-v1/00000/08A6C93D-8761-E711-9FD1-003048FFCBB2.root   maxEvents=-1   outputFile=rawtoworld-nugun.badOldTag.root
 
     
@@ -33,6 +47,14 @@ Plot
     cmsRun runRawtoRecoAndDumpNewTag.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170911.root   maxEvents=-1   outputFile=rawtoworld-nugun.LCfewFB.root
     
 
+    
+    /RelValZEE_13/CMSSW_9_3_0_pre3-PUpmx25ns_92X_upgrade2017_realistic_v10_resub2-v1/GEN-SIM-DIGI-RAW-HLTDEBUG
+    /store/relval/CMSSW_9_3_0_pre3/RelValZEE_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_v10_resub2-v1/00000/080F4E90-9185-E711-80DE-0CC47A4C8EE2.root
+    
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/relval/CMSSW_9_3_0_pre3/RelValZEE_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_v10_resub2-v1/00000/080F4E90-9185-E711-80DE-0CC47A4C8EE2.root   maxEvents=-1   outputFile=rawtoworld-zee.relval.OLD.root
+    
+    
+    
 
 Run
 ====
@@ -163,6 +185,26 @@ Run
     h->GetBinContent (3)
     
     
+    r99t rawtoworld-zeedata.root 
+    r99t rawtoworld-zeedata.weights.root 
+    r99t rawtoworld-zeedata.weights.RunC.root
+    r99t rawtoworld-zeedata.weights.RunD.root
+    
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("offlineEnergyEE:etaEE", "etaEE>-80 && offlineEnergyEE < 20 && offlineEnergyEE>0 && flagEE==0", "colz");
+    tree ->Draw("offlineEnergyEE:etaEE", "etaEE>-80 && offlineEnergyEE < 20 && offlineEnergyEE>0 && flagEE==1", "colz");
+    tree ->Draw("offlineEnergyEE:etaEE", "etaEE>-80 && offlineEnergyEE < 20 && offlineEnergyEE>0 && flagEE==2", "colz");
+    
+    tree ->Draw("onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE < 30 && onlineEnergyEE>0 && flagEE==0", "colz");
+    tree ->Draw("onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE < 30 && onlineEnergyEE>0 && flagEE==1", "colz");
+    tree ->Draw("onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE < 30 && onlineEnergyEE>0 && flagEE==2", "colz");
+    
+    tree ->Draw("onlineEnergyEE:flagEE", "etaEE>-80 && onlineEnergyEE < 30 && onlineEnergyEE>0", "colz");
+    tree ->Draw("onlineEnergyEB:flagEB", "etaEB>-80 && onlineEnergyEB < 30 && onlineEnergyEB>0", "colz");
+    
+    
+    
+    
     TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
     tree ->Draw("TPCalibOfflineET/TPonlineETADC", "TPonlineETADC>0 && TPCalibOfflineET>0", "colz");
     tree ->Draw("TPCalibOfflineET/TPonlineETADC", "TPonlineETADC>0 && TPCalibOfflineET>2", "colz");
@@ -173,6 +215,7 @@ Run
     
     TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
     tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1", "colz");
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)>=27", "colz");
     
     
     tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,10)", "TPonlineETADC>-1", "colz");

@@ -155,11 +155,16 @@ class TreeProducer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       UShort_t _lumi;
       UShort_t _bx;
       UShort_t _event;      
-      int _flagEB[61200];
       float _onlineEnergyEB[61200];
-      int _flagEE[14648];
       float _onlineEnergyEE[14648];
+      int _flagEB[61200];
+      int _flagEE[14648];
       
+      float _offlineEnergyEB[61200];
+      float _offlineEnergyEE[14648];
+      float _etaEB[61200];
+      float _etaEE[14648];
+            
       float _TPflag[4032];
       float _TPonlineEnergyADC[4032];
       float _TPonlineEnergyTowerADC[4032];
@@ -221,11 +226,15 @@ TreeProducer::TreeProducer(const edm::ParameterSet& iConfig)
    outTree->Branch("lumi",              &_lumi,            "lumi/s");
    outTree->Branch("bx",                &_bx,              "bx/s");
    outTree->Branch("event",             &_event,           "event/i");
-   outTree->Branch("flagEB",               _flagEB,            "flagEB[61200]/F");
    outTree->Branch("onlineEnergyEB",       _onlineEnergyEB,    "onlineEnergyEB[61200]/F");
-   outTree->Branch("flagEE",               _flagEE,            "flagEE[14648]/F");
    outTree->Branch("onlineEnergyEE",       _onlineEnergyEE,    "onlineEnergyEE[14648]/F");
    
+   outTree->Branch("offlineEnergyEB",       _offlineEnergyEB,    "offlineEnergyEB[61200]/F");
+   outTree->Branch("offlineEnergyEE",       _offlineEnergyEE,    "offlineEnergyEE[14648]/F");
+   outTree->Branch("etaEB",       _etaEB,    "etaEB[61200]/F");
+   outTree->Branch("etaEE",       _etaEE,    "etaEE[14648]/F");
+   outTree->Branch("flagEB",       _flagEB,    "flagEB[61200]/I");
+   outTree->Branch("flagEE",       _flagEE,    "flagEE[14648]/I");
    
    
    outTree->Branch("TPflag",                _TPflag,             "TPflag[4032]/F");
@@ -320,16 +329,20 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
   
   //---- fill information
-  
+   
   for (int ixtal=0; ixtal < 61200; ixtal++) {
     //---- Fill flag for this crystal
     _flagEB[ixtal] = -99;
     _onlineEnergyEB[ixtal] = -99;
+    _etaEB[ixtal] = -99;
+    _offlineEnergyEB[ixtal] = -99;
   }
   for (int ixtal=0; ixtal < 14648; ixtal++) {
     //---- Fill flag for this crystal
     _flagEE[ixtal] = -99;
     _onlineEnergyEE[ixtal] = -99;
+    _etaEE[ixtal] = -99;
+    _offlineEnergyEE[ixtal] = -99;
   }
   
   
@@ -337,25 +350,37 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //   std::cout << " > eerechits->size() = " << eerechits->size() << std::endl;
 //   std::cout << " ~~ " << std::endl;
   
+  edm::ESHandle<CaloGeometry> pGeometry;
+  iSetup.get<CaloGeometryRecord>().get(pGeometry);
+  const CaloGeometry *geometry = pGeometry.product();
+  
+  
+  edm::ESHandle<EcalTrigTowerConstituentsMap> eTTmap;
+  iSetup.get<IdealGeometryRecord>().get(eTTmap);
+  
+  
+  
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
-    _onlineEnergyEB[EBDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();
-//     std::cout << "EB = " << itrechit->amplitude() << std::endl;
-//     std::cout << "EB = " << itrechit->id().subdetId() << " -- " << itrechit->id().rawId() << " -- "  << std::endl;
-//     std::cout << "   = " << EBDetId(itrechit->id()).hashedIndex() << " -- "  << std::endl;
-
-//     const EcalTrigTowerDetId towid = EBDetId(itrechit->id()).tower();
-    
-    
+    _onlineEnergyEB[EBDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();    
   }
 
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = eerechits->begin(); itrechit != eerechits->end(); itrechit++ ) {
     _onlineEnergyEE[EEDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();
-//     std::cout << "EE = " << itrechit->amplitude() << std::endl;
-//     std::cout << "EE = " << itrechit->id().subdetId() << " -- " << itrechit->id().rawId() << " -- "  << std::endl;
-//     std::cout << "   = " << EEDetId(itrechit->id()).hashedIndex() << " -- "  << std::endl;
   }
+
+  for (EcalRecHitCollection::const_iterator itrechit = calib_ebrechits->begin(); itrechit != calib_ebrechits->end(); itrechit++ ) { 
+    _etaEB[EBDetId(itrechit->id()).hashedIndex()]           = (EBDetId(itrechit->id()).ieta());
+    _offlineEnergyEB[EBDetId(itrechit->id()).hashedIndex()] = itrechit->energy();
+  }
+  
+  for (EcalRecHitCollection::const_iterator itrechit = calib_eerechits->begin(); itrechit != calib_eerechits->end(); itrechit++ ) { 
+    GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
+    _etaEE[EEDetId(itrechit->id()).hashedIndex()]           = mycell.eta();
+    _offlineEnergyEE[EEDetId(itrechit->id()).hashedIndex()] = itrechit->energy();
+  }
+  
   
   
   
@@ -408,16 +433,7 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   double lsb10bitsEE(eeItr == physMap.end() ? 0. : eeItr->second.EtSat / 1024.);
   
   
-  edm::ESHandle<CaloGeometry> pGeometry;
-  iSetup.get<CaloGeometryRecord>().get(pGeometry);
-  const CaloGeometry *geometry = pGeometry.product();
-  
-  
-  edm::ESHandle<EcalTrigTowerConstituentsMap> eTTmap;
-  iSetup.get<IdealGeometryRecord>().get(eTTmap);
-  
-  
-  
+    
   for (unsigned int i=0;i<tphandle.product()->size();i++) {
     EcalTriggerPrimitiveDigi d = (*(tphandle.product()))[i];
     const EcalTrigTowerDetId TPtowid = d.id();
@@ -557,6 +573,7 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //             towerET = towerET + itrechit->energy() * sin (theta);
             towerET = towerET + itrechit->energy() * mycell.perp()/mycell.mag();
             
+            _flagEB[EBDetId(itrechit->id()).hashedIndex()] = (d[0].ttFlag());
             
           }
         }
@@ -576,7 +593,10 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
             GlobalPoint mycell = geometry -> getPosition(DetId(itrechit->id()));
 //             float theta = mycell.theta();
 //             towerET = towerET + itrechit->energy() * sin (theta);
-            towerET = towerET + itrechit->energy() * mycell.perp()/mycell.mag();      
+            towerET = towerET + itrechit->energy() * mycell.perp()/mycell.mag();  
+            
+            _flagEE[EEDetId(itrechit->id()).hashedIndex()] = (d[0].ttFlag());
+            
           }
         }
         _TPCalibOfflineEnergy [ TPtowid.hashedIndex() ] = towerEnergy;
