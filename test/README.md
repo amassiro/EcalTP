@@ -157,6 +157,21 @@ Run
     
 
 
+    
+    
+    
+    
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170926.root   maxEvents=-1   outputFile=rawtoworld-zee.FullReadout.root
+
+    r99t  rawtoworld-zee.relval.root    rawtoworld-zee.FullReadout.root    drawCompareOldNew.cxx
+    
+    
+    
+    
+    
+    
+    
+    
 
     
     
