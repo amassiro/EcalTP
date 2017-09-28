@@ -55,6 +55,36 @@ Plot
     
     
     
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/relval/CMSSW_9_2_9/RelValZEE_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/0C197E9F-D193-E711-A52D-0025905A610A.root    maxEvents=-1   outputFile=rawtoworld-zee.relval.test.root
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/group/dpg_ecal/comm_ecal/test/ming/step2_DIGIPREMIX_S2_DATAMIX_L1_DIGI2RAW_HLT_new_PU_20170926.root   maxEvents=-1   outputFile=rawtoworld-zee.FullReadout.root
+
+
+    Standard
+    
+ > ebrechits->size() = 1105
+ > eerechits->size() = 251
+ ~~ 
+Begin processing the 46th record. Run 1, Event 5942, LumiSection 60 at 28-Sep-2017 11:48:27.780 CEST
+ ~~ 
+ > ebrechits->size() = 1576
+ > eerechits->size() = 947
+ ~~ 
+Begin processing the 47th record. Run 1, Event 5948, LumiSection 60 at 28-Sep-2017 11:48:28.274 CEST
+ ~~ 
+ > ebrechits->size() = 1488
+ > eerechits->size() = 451
+
+
+ 
+    FullReadout
+ 
+ > ebrechits->size() = 61200
+ > eerechits->size() = 14430
+
+ 
+ 
+ 
+ 
 
 Run
 ====
