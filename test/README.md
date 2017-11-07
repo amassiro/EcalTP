@@ -202,6 +202,13 @@ Run
     
     
     
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:/afs/cern.ch/user/a/amassiro/work/ECAL/Pulses/CMSSW_9_2_9/src/step2_DIGI_L1_DIGI2RAW_HLT.root
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:/afs/cern.ch/user/a/amassiro/work/ECAL/Pulses/CMSSW_9_2_9/src/step2_DIGI_L1_DIGI2RAW_HLT.root.withNOnoise.root
+ 
+    
+    
+    
+    
 
     
     
