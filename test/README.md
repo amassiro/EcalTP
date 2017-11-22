@@ -284,6 +284,47 @@ Run
     tree ->Draw("TPCalibOfflineEnergy/TPonlineETADC", "TPonlineETADC>0 && TPCalibOfflineEnergy>0", "colz");
     tree ->Draw("TPCalibOfflineEnergy/TPonlineETADC", "TPonlineETADC>0 && TPCalibOfflineEnergy>1", "colz");
     
+
+    
+Check difference between weights and MF:
+
+    source /cvmfs/cms.cern.ch/crab3/crab.sh
+    voms-proxy-init --voms cms
+    xrdcp root://cms-xrd-global.cern.ch//store/data/Run2017B/DoubleEG/RAW-RECO/ZElectron-PromptReco-v1/000/297/047/00000/1CA3695B-6456-E711-A8AE-02163E0140DA.root /tmp/amassiro/
+    
+    cmsRun runRawtoRecoAndDumpData.weightsVsMF.py             inputFiles=file:/tmp/amassiro/1CA3695B-6456-E711-A8AE-02163E0140DA.root   maxEvents=-1   outputFile=rawtoworld-zeedata.compareWeightsVsMF.root
+
+    
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE > 3", "colz");
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE > 1 && onlineEnergyEE_weights/onlineEnergyEE < 10", "colz");
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE > 1 && onlineEnergyEE_weights/onlineEnergyEE < 10 && onlineEnergyEE_weights/onlineEnergyEE > 0 && flagEE>=1", "colz");
+    tree ->Draw("onlineEnergyEB_weights/onlineEnergyEB:etaEB", "etaEB>-80 && onlineEnergyEB > 1 && onlineEnergyEB_weights/onlineEnergyEB < 10 && onlineEnergyEB_weights/onlineEnergyEB > 0 && flagEB>=1", "colz");
+        
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE > 1 && onlineEnergyEE_weights/onlineEnergyEE < 10 && onlineEnergyEE_weights/onlineEnergyEE > 0", "colz");
+    tree ->Draw("onlineEnergyEB_weights/onlineEnergyEB:etaEB", "etaEB>-80 && onlineEnergyEB > 1 && onlineEnergyEB_weights/onlineEnergyEB < 10 && onlineEnergyEB_weights/onlineEnergyEB > 0", "colz");
+    
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE", "etaEE>-80 && onlineEnergyEE > 1 && onlineEnergyEE_weights/onlineEnergyEE < 10 && onlineEnergyEE_weights/onlineEnergyEE > 0", "");
+    tree ->Draw("onlineEnergyEB_weights/onlineEnergyEB", "etaEB>-80 && onlineEnergyEB > 1 && onlineEnergyEB_weights/onlineEnergyEB < 10 && onlineEnergyEB_weights/onlineEnergyEB > 0", "");
+    
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE", "etaEE>-80 && onlineEnergyEE > 10 && onlineEnergyEE_weights/onlineEnergyEE < 10 && onlineEnergyEE_weights/onlineEnergyEE > 0", "");
+    tree ->Draw("onlineEnergyEB_weights/onlineEnergyEB", "etaEB>-80 && onlineEnergyEB > 10 && onlineEnergyEB_weights/onlineEnergyEB < 10 && onlineEnergyEB_weights/onlineEnergyEB > 0", "");
+    
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE", "etaEE>-80 && onlineEnergyEE > 5 && onlineEnergyEE_weights/onlineEnergyEE < 10 && onlineEnergyEE_weights/onlineEnergyEE > 0", "");
+    tree ->Draw("onlineEnergyEB_weights/onlineEnergyEB", "etaEB>-80 && onlineEnergyEB > 5 && onlineEnergyEB_weights/onlineEnergyEB < 10 && onlineEnergyEB_weights/onlineEnergyEB > 0", "");
+    
+    tree ->Draw("onlineEnergyEE_weights:onlineEnergyEE", "etaEE>-80 && onlineEnergyEE_weights > 5 && onlineEnergyEE_weights < 20  && onlineEnergyEE > 5 && onlineEnergyEE < 20 && onlineEnergyEE_weights/onlineEnergyEE < 10 && onlineEnergyEE_weights/onlineEnergyEE > 0", "colz");
+    tree ->Draw("onlineEnergyEB_weights:onlineEnergyEB", "etaEB>-80 && onlineEnergyEB_weights > 5 && onlineEnergyEB_weights < 20  && onlineEnergyEB > 5 && onlineEnergyEB < 20 && onlineEnergyEB_weights/onlineEnergyEB < 10 && onlineEnergyEB_weights/onlineEnergyEB > 0", "colz");
+    TF1 f("f","x",0,20)
+    f.Draw("L same")
+    
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE", "etaEE>-80 && onlineEnergyEE_weights > 5 && onlineEnergyEE_weights < 20  && onlineEnergyEE > 5 && onlineEnergyEE < 20 && onlineEnergyEE_weights/onlineEnergyEE < 10 && onlineEnergyEE_weights/onlineEnergyEE > 0", "");
+    tree ->Draw("onlineEnergyEB_weights/onlineEnergyEB", "etaEB>-80 && onlineEnergyEB_weights > 5 && onlineEnergyEB_weights < 20  && onlineEnergyEB > 5 && onlineEnergyEB < 20 && onlineEnergyEB_weights/onlineEnergyEB < 10 && onlineEnergyEB_weights/onlineEnergyEB > 0", "");
     
     
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE", "etaEE>-80 && onlineEnergyEE_weights > 3 && onlineEnergyEE_weights < 6  && onlineEnergyEE > 3 && onlineEnergyEE < 6 && onlineEnergyEE_weights/onlineEnergyEE < 6 && onlineEnergyEE_weights/onlineEnergyEE > 0", "");
+    tree ->Draw("onlineEnergyEB_weights/onlineEnergyEB", "etaEB>-80 && onlineEnergyEB_weights > 3 && onlineEnergyEB_weights < 6  && onlineEnergyEB > 3 && onlineEnergyEB < 6 && onlineEnergyEB_weights/onlineEnergyEB < 6 && onlineEnergyEB_weights/onlineEnergyEB > 0", "");
+    
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE", "etaEE>-80 && onlineEnergyEE_weights > 3 && onlineEnergyEE_weights < 6  && onlineEnergyEE_weights/onlineEnergyEE < 6 && onlineEnergyEE_weights/onlineEnergyEE > 0", "");
+    tree ->Draw("onlineEnergyEB_weights/onlineEnergyEB", "etaEB>-80 && onlineEnergyEB_weights > 3 && onlineEnergyEB_weights < 6  && onlineEnergyEB_weights/onlineEnergyEB < 6 && onlineEnergyEB_weights/onlineEnergyEB > 0", "");
     
