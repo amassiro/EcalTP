@@ -79,14 +79,101 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
-process.mix.input.nbPileupEvents.averageNumber = cms.double(35.000000)
-process.mix.bunchspace = cms.int32(25)
-process.mix.minBunch = cms.int32(-12)
-process.mix.maxBunch = cms.int32(3)
-process.mix.input.fileNames = cms.untracked.vstring(['/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/04C3C427-914F-E711-AF53-0CC47A4D7600.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/1C211F06-974F-E711-BFE6-0025905A613C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/66295681-924F-E711-8E47-0025905B8598.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/6CB75CB0-914F-E711-8675-0CC47A78A478.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/945A0CD0-924F-E711-910F-0025905A613C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/CC41BBE9-964F-E711-BE15-0CC47A4C8E96.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/E24452B2-914F-E711-8F1C-0CC47A4D75EC.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/E63C4321-954F-E711-BD43-0CC47A4C8F0C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/F2834728-914F-E711-ABAB-003048FFCBB2.root'])
-process.mix.digitizers = cms.PSet(process.theDigitizersValid)
+#process.mix.input.nbPileupEvents.averageNumber = cms.double(35.000000)
+#process.mix.bunchspace = cms.int32(25)
+#process.mix.minBunch = cms.int32(-12)
+#process.mix.maxBunch = cms.int32(3)
+#process.mix.input.fileNames = cms.untracked.vstring(['/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/04C3C427-914F-E711-AF53-0CC47A4D7600.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/1C211F06-974F-E711-BFE6-0025905A613C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/66295681-924F-E711-8E47-0025905B8598.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/6CB75CB0-914F-E711-8675-0CC47A78A478.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/945A0CD0-924F-E711-910F-0025905A613C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/CC41BBE9-964F-E711-BE15-0CC47A4C8E96.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/E24452B2-914F-E711-8F1C-0CC47A4D75EC.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/E63C4321-954F-E711-BD43-0CC47A4C8F0C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/F2834728-914F-E711-ABAB-003048FFCBB2.root'])
+#process.mix.digitizers = cms.PSet(process.theDigitizersValid)
+
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Candidate_forECALStudies', '')
+
+
+process.GlobalTag.toGet = cms.VPSet(
+
+   cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
+                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v1"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+   cms.PSet(record = cms.string("EcalPedestalsRcd"),
+                   tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+   cms.PSet(record = cms.string("EcalSRSettingsRcd"),
+                   tag = cms.string("EcalSRSettings_beam2018_option1_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+   cms.PSet(record = cms.string("EcalTPGLinearizationConstRcd"),
+                   tag = cms.string("EcalTPGLinearizationConst_2018_mc_30fb_bycr"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+   cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
+                   tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+   cms.PSet(record = cms.string("EcalTPGPhysicsConstRcd"),
+                   tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+   cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
+                   tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+  #
+  #
+  #
+
+   cms.PSet(record = cms.string("EcalTPGFineGrainEBGroupRcd"),
+                   tag = cms.string("EcalTPGFineGrainEBGroup_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+   cms.PSet(record = cms.string("EcalTPGFineGrainEBIdMapRcd"),
+                   tag = cms.string("EcalTPGFineGrainEBIdMap_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+   cms.PSet(record = cms.string("EcalTPGFineGrainStripEERcd"),
+                   tag = cms.string("EcalTPGFineGrainStripEE_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+   cms.PSet(record = cms.string("EcalTPGFineGrainTowerEERcd"),
+                   tag = cms.string("EcalTPGFineGrainTowerEE_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+   cms.PSet(record = cms.string("EcalTPGLutGroupRcd"),
+                   tag = cms.string("EcalTPGLutGroup_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+   cms.PSet(record = cms.string("EcalTPGSlidingWindowRcd"),
+                   tag = cms.string("EcalTPGSlidingWindow_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+   cms.PSet(record = cms.string("EcalTPGSpikeRcd"),
+                   tag = cms.string("EcalTPGSpike_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+   cms.PSet(record = cms.string("EcalTPGWeightGroupRcd"),
+                   tag = cms.string("EcalTPGWeightGroup_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+   cms.PSet(record = cms.string("EcalTPGWeightIdMapRcd"),
+                   tag = cms.string("EcalTPGWeightIdMap_2018_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+
+
+)
+
+
 
 # Path and EndPath definitions
 process.digitisation_step = cms.Path(process.pdigi_valid)
