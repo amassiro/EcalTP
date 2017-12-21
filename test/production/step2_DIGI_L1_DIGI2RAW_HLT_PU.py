@@ -25,6 +25,10 @@ process.load('HLTrigger.Configuration.HLT_2e34v21_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
+
+
+
+
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(100)
 )
@@ -72,7 +76,7 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(10485760),
-    fileName = cms.untracked.string('step2_DIGI_L1_DIGI2RAW_HLT_PU.root'),
+    fileName = cms.untracked.string('step2_DIGI_L1_DIGI2RAW_HLT.root'),
     outputCommands = process.FEVTDEBUGHLTEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
@@ -80,6 +84,8 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
+process.mix.digitizers = cms.PSet(process.theDigitizersValid)
+
 #process.mix.input.nbPileupEvents.averageNumber = cms.double(0.000000)
 #process.mix.bunchspace = cms.int32(25)
 #process.mix.minBunch = cms.int32(-12)
@@ -89,6 +95,7 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
 
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Candidate_forECALStudies', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v10', '')
 
 
 process.GlobalTag.toGet = cms.VPSet(
@@ -182,6 +189,7 @@ process.L1simulation_step = cms.Path(process.SimL1Emulator)
 process.digi2raw_step = cms.Path(process.DigiToRaw)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.FEVTDEBUGHLToutput_step = cms.EndPath(process.FEVTDEBUGHLToutput)
+
 
 # Schedule definition
 process.schedule = cms.Schedule(process.digitisation_step,process.L1simulation_step,process.digi2raw_step)
