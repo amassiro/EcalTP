@@ -14,7 +14,8 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
-process.load('SimGeneral.MixingModule.mix_POISSON_average_cfi')
+#process.load('SimGeneral.MixingModule.mix_POISSON_average_cfi')
+process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.Digi_cff')
@@ -79,7 +80,7 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
-#process.mix.input.nbPileupEvents.averageNumber = cms.double(35.000000)
+#process.mix.input.nbPileupEvents.averageNumber = cms.double(0.000000)
 #process.mix.bunchspace = cms.int32(25)
 #process.mix.minBunch = cms.int32(-12)
 #process.mix.maxBunch = cms.int32(3)
