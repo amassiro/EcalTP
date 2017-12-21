@@ -21,7 +21,7 @@ process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.Digi_cff')
 process.load('Configuration.StandardSequences.SimL1Emulator_cff')
 process.load('Configuration.StandardSequences.DigiToRaw_cff')
-process.load('HLTrigger.Configuration.HLT_2e34v21_cff')
+process.load('HLTrigger.Configuration.HLT_2e34v22_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
@@ -100,12 +100,12 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Cand
 
 process.GlobalTag.toGet = cms.VPSet(
 
-   cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
-                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v1"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+     #cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v1"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
-   cms.PSet(record = cms.string("EcalPedestalsRcd"),
+ cms.PSet(record = cms.string("EcalPedestalsRcd"),
                    tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
                    connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   ),
