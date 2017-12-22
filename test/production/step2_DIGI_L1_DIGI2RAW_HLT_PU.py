@@ -94,88 +94,90 @@ process.mix.digitizers = cms.PSet(process.theDigitizersValid)
 #process.mix.digitizers = cms.PSet(process.theDigitizersValid)
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Candidate_forECALStudies', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Candidate_forECALStudies', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha', '')
+
 #process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v10', '')
 
 
 process.GlobalTag.toGet = cms.VPSet(
 
-     #cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
-                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v1"),
+     cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
+                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v2"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+ #cms.PSet(record = cms.string("EcalPedestalsRcd"),
+                   #tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
 
- cms.PSet(record = cms.string("EcalPedestalsRcd"),
-                   tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+   #cms.PSet(record = cms.string("EcalSRSettingsRcd"),
+                   #tag = cms.string("EcalSRSettings_beam2018_option1_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
-   cms.PSet(record = cms.string("EcalSRSettingsRcd"),
-                   tag = cms.string("EcalSRSettings_beam2018_option1_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+   #cms.PSet(record = cms.string("EcalTPGLinearizationConstRcd"),
+                   #tag = cms.string("EcalTPGLinearizationConst_2018_mc_30fb_bycr"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
-   cms.PSet(record = cms.string("EcalTPGLinearizationConstRcd"),
-                   tag = cms.string("EcalTPGLinearizationConst_2018_mc_30fb_bycr"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+   #cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
+                   #tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
-   cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
-                   tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+   #cms.PSet(record = cms.string("EcalTPGPhysicsConstRcd"),
+                   #tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+   #cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
+                   #tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
-   cms.PSet(record = cms.string("EcalTPGPhysicsConstRcd"),
-                   tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-   cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
-                   tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+  ##
+  ##
+  ##
 
-  #
-  #
-  #
+   #cms.PSet(record = cms.string("EcalTPGFineGrainEBGroupRcd"),
+                   #tag = cms.string("EcalTPGFineGrainEBGroup_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
-   cms.PSet(record = cms.string("EcalTPGFineGrainEBGroupRcd"),
-                   tag = cms.string("EcalTPGFineGrainEBGroup_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+   #cms.PSet(record = cms.string("EcalTPGFineGrainEBIdMapRcd"),
+                   #tag = cms.string("EcalTPGFineGrainEBIdMap_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
-   cms.PSet(record = cms.string("EcalTPGFineGrainEBIdMapRcd"),
-                   tag = cms.string("EcalTPGFineGrainEBIdMap_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-
-   cms.PSet(record = cms.string("EcalTPGFineGrainStripEERcd"),
-                   tag = cms.string("EcalTPGFineGrainStripEE_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-   cms.PSet(record = cms.string("EcalTPGFineGrainTowerEERcd"),
-                   tag = cms.string("EcalTPGFineGrainTowerEE_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-   cms.PSet(record = cms.string("EcalTPGLutGroupRcd"),
-                   tag = cms.string("EcalTPGLutGroup_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-   cms.PSet(record = cms.string("EcalTPGSlidingWindowRcd"),
-                   tag = cms.string("EcalTPGSlidingWindow_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-   cms.PSet(record = cms.string("EcalTPGSpikeRcd"),
-                   tag = cms.string("EcalTPGSpike_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-   cms.PSet(record = cms.string("EcalTPGWeightGroupRcd"),
-                   tag = cms.string("EcalTPGWeightGroup_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-   cms.PSet(record = cms.string("EcalTPGWeightIdMapRcd"),
-                   tag = cms.string("EcalTPGWeightIdMap_2018_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+   #cms.PSet(record = cms.string("EcalTPGFineGrainStripEERcd"),
+                   #tag = cms.string("EcalTPGFineGrainStripEE_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+   #cms.PSet(record = cms.string("EcalTPGFineGrainTowerEERcd"),
+                   #tag = cms.string("EcalTPGFineGrainTowerEE_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+   #cms.PSet(record = cms.string("EcalTPGLutGroupRcd"),
+                   #tag = cms.string("EcalTPGLutGroup_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+   #cms.PSet(record = cms.string("EcalTPGSlidingWindowRcd"),
+                   #tag = cms.string("EcalTPGSlidingWindow_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+   #cms.PSet(record = cms.string("EcalTPGSpikeRcd"),
+                   #tag = cms.string("EcalTPGSpike_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+   #cms.PSet(record = cms.string("EcalTPGWeightGroupRcd"),
+                   #tag = cms.string("EcalTPGWeightGroup_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+   #cms.PSet(record = cms.string("EcalTPGWeightIdMapRcd"),
+                   #tag = cms.string("EcalTPGWeightIdMap_2018_mc"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
 
 
