@@ -103,7 +103,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_for
 process.GlobalTag.toGet = cms.VPSet(
 
      cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
-                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),   # --> not working
                    tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),
                    connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   ),
@@ -196,7 +196,7 @@ process.FEVTDEBUGHLToutput_step = cms.EndPath(process.FEVTDEBUGHLToutput)
 
 # Schedule definition
 process.schedule = cms.Schedule(process.digitisation_step,process.L1simulation_step,process.digi2raw_step)
-process.schedule.extend(process.HLTSchedule)
+#process.schedule.extend(process.HLTSchedule)
 process.schedule.extend([process.endjob_step,process.FEVTDEBUGHLToutput_step])
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
@@ -204,10 +204,10 @@ associatePatAlgosToolsTask(process)
 # customisation of the process.
 
 # Automatic addition of the customisation function from HLTrigger.Configuration.customizeHLTforMC
-from HLTrigger.Configuration.customizeHLTforMC import customizeHLTforMC 
+#from HLTrigger.Configuration.customizeHLTforMC import customizeHLTforMC 
 
 #call to customisation function customizeHLTforMC imported from HLTrigger.Configuration.customizeHLTforMC
-process = customizeHLTforMC(process)
+#process = customizeHLTforMC(process)
 
 # End of customisation functions
 
