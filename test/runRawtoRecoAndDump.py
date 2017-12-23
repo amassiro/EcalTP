@@ -68,7 +68,8 @@ process.configurationMetadata = cms.untracked.PSet(
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v10', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v10', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v7_forTEST_EGM_JetMET', '')
 
 
@@ -77,6 +78,16 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v10'
 
 
 
+
+
+process.GlobalTag.toGet = cms.VPSet(
+
+     cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),   # --> not working
+                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+)
 
 
 

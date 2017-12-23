@@ -14,7 +14,8 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
-process.load('SimGeneral.MixingModule.mix_POISSON_average_cfi')
+#process.load('SimGeneral.MixingModule.mix_POISSON_average_cfi')
+process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.RawToDigi_cff')
@@ -33,7 +34,7 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:step2_DIGI_L1_DIGI2RAW_HLT_PU.root'),
+    fileNames = cms.untracked.vstring('file:step2_DIGI_L1_DIGI2RAW_HLT.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -89,18 +90,32 @@ process.DQMoutput = cms.OutputModule("DQMRootOutputModule",
 # Additional output definition
 
 # Other statements
-process.mix.input.nbPileupEvents.averageNumber = cms.double(35.000000)
-process.mix.bunchspace = cms.int32(25)
-process.mix.minBunch = cms.int32(-12)
-process.mix.maxBunch = cms.int32(3)
-process.mix.input.fileNames = cms.untracked.vstring(['/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/04C3C427-914F-E711-AF53-0CC47A4D7600.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/1C211F06-974F-E711-BFE6-0025905A613C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/66295681-924F-E711-8E47-0025905B8598.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/6CB75CB0-914F-E711-8675-0CC47A78A478.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/945A0CD0-924F-E711-910F-0025905A613C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/CC41BBE9-964F-E711-BE15-0CC47A4C8E96.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/E24452B2-914F-E711-8F1C-0CC47A4D75EC.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/E63C4321-954F-E711-BD43-0CC47A4C8F0C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/F2834728-914F-E711-ABAB-003048FFCBB2.root'])
-process.mix.playback = True
-process.mix.digitizers = cms.PSet()
-for a in process.aliases: delattr(process, a)
-process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("randomEngineStateProducer")
-from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Candidate_forECALStudies', '')
+process.mix.digitizers = cms.PSet(process.theDigitizersValid)
 
+#process.mix.input.nbPileupEvents.averageNumber = cms.double(35.000000)
+#process.mix.bunchspace = cms.int32(25)
+#process.mix.minBunch = cms.int32(-12)
+#process.mix.maxBunch = cms.int32(3)
+#process.mix.input.fileNames = cms.untracked.vstring(['/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/04C3C427-914F-E711-AF53-0CC47A4D7600.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/1C211F06-974F-E711-BFE6-0025905A613C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/66295681-924F-E711-8E47-0025905B8598.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/6CB75CB0-914F-E711-8675-0CC47A78A478.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/945A0CD0-924F-E711-910F-0025905A613C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/CC41BBE9-964F-E711-BE15-0CC47A4C8E96.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/E24452B2-914F-E711-8F1C-0CC47A4D75EC.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/E63C4321-954F-E711-BD43-0CC47A4C8F0C.root', '/store/relval/CMSSW_9_2_3/RelValMinBias_13/GEN-SIM/92X_upgrade2017_realistic_v1_earlyBS2017-v1/10000/F2834728-914F-E711-ABAB-003048FFCBB2.root'])
+#process.mix.playback = True
+#process.mix.digitizers = cms.PSet()
+#for a in process.aliases: delattr(process, a)
+#process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("randomEngineStateProducer")
+
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha', '')
+
+
+
+process.GlobalTag.toGet = cms.VPSet(
+
+     cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),   # --> not working
+                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+)
+     
 # Path and EndPath definitions
 process.raw2digi_step = cms.Path(process.RawToDigi)
 process.L1Reco_step = cms.Path(process.L1Reco)

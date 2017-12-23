@@ -19,6 +19,13 @@ Plot
     cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/relval/CMSSW_9_2_9/RelValZEE_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/0C197E9F-D193-E711-A52D-0025905A610A.root    maxEvents=-1   outputFile=rawtoworld-zee.relval.root
 
     
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:production/step3_RAW2DIGI_L1Reco_RECO_EI_PAT_VALIDATION_DQM_PU_inMINIAODSIM.root   maxEvents=-1   outputFile=rawtoworld-zeeMC.root
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:production/step2_DIGI_L1_DIGI2RAW_HLT.root   maxEvents=-1   outputFile=rawtoworld-zeeMC.root
+
+    
+        
+    
+    
     source /cvmfs/cms.cern.ch/crab3/crab.sh
     voms-proxy-init --voms cms
     xrdcp root://cms-xrd-global.cern.ch//store/data/Run2017B/DoubleEG/RAW-RECO/ZElectron-PromptReco-v1/000/297/047/00000/1CA3695B-6456-E711-A8AE-02163E0140DA.root /tmp/amassiro/
@@ -256,6 +263,8 @@ Run
     tree ->Draw("onlineEnergyEB:flagEB", "etaEB>-80 && onlineEnergyEB < 30 && onlineEnergyEB>0", "colz");
     
     
+    tree ->Draw("offlineEnergyEE/onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE>20", "colz");
+
     
     
     TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
@@ -294,6 +303,8 @@ Check difference between weights and MF:
     
     cmsRun runRawtoRecoAndDumpData.weightsVsMF.py             inputFiles=file:/tmp/amassiro/1CA3695B-6456-E711-A8AE-02163E0140DA.root   maxEvents=-1   outputFile=rawtoworld-zeedata.compareWeightsVsMF.root
 
+    
+    
     
     TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
     tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE > 3", "colz");
