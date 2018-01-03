@@ -22,8 +22,15 @@ Plot
     cmsRun runRawtoRecoAndDump.py             inputFiles=file:production/step3_RAW2DIGI_L1Reco_RECO_EI_PAT_VALIDATION_DQM_PU_inMINIAODSIM.root   maxEvents=-1   outputFile=rawtoworld-zeeMC.root
     cmsRun runRawtoRecoAndDump.py             inputFiles=file:production/step2_DIGI_L1_DIGI2RAW_HLT.root   maxEvents=-1   outputFile=rawtoworld-zeeMC.root
 
+    r99t rawtoworld-zeeMC.root
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1", "colz");
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)>=27", "colz");
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)<27", "colz");
     
-        
+    tree ->Draw("TPflag:2*TPonlineETADC>>h(100,0,12,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)>=27", "colz");
+    tree ->Draw("TPflag:2*TPonlineETADC>>h(100,0,12,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)<27", "colz");
+      
     
     
     source /cvmfs/cms.cern.ch/crab3/crab.sh
