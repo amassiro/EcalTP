@@ -140,10 +140,18 @@ process.GlobalTag.toGet = cms.VPSet(
                   #),
 
 
+
+
    cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
-                   tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_3.0_1.5_EE_3.5_2.0"),
+                   tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
                    connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   ),
+
+
+   #cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
+                   #tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_3.0_1.5_EE_3.5_2.0"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
 
    #cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
