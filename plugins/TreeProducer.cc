@@ -433,6 +433,9 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   EcalTPGPhysicsConstMapIterator eeItr(physMap.find(DetId(DetId::Ecal,EcalEndcap).rawId()));
   double lsb10bitsEE(eeItr == physMap.end() ? 0. : eeItr->second.EtSat / 1024.);
   
+  std::cout << " lsb10bitsEB = " << lsb10bitsEB << std::endl;
+  std::cout << " lsb10bitsEE = " << lsb10bitsEE << std::endl;
+  
   
     
   for (unsigned int i=0;i<tphandle.product()->size();i++) {
@@ -452,7 +455,7 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 //     tE.sFGVB = (d[0].sFGVB());
 //     mapTower[TPtowid] = tE ;
 
-//     std::cout << " TPtowid.hashedIndex() = " << TPtowid.hashedIndex() << std::endl;
+    if (TPtowid.hashedIndex() >= 4032) std::cout << " TPtowid.hashedIndex() = " << TPtowid.hashedIndex() << std::endl;
 //     std::cout << "        -> " <<  (d[0].raw() & 0xfff) << std::endl;
 //     std::cout << "        -> " <<  (d[0].raw() & 0xff ) << std::endl;
     if (TPtowid.hashedIndex() < 4032) {
@@ -477,6 +480,8 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       EcalTPGGroups::EcalTPGGroupsMapItr itgrp = lutGrpMap.find(towerId.rawId()) ;
       uint32_t lutGrp = 999 ;
       if (itgrp != lutGrpMap.end()) lutGrp = itgrp->second ;
+      
+      if (lutGrp != 0 ) std::cout << "        lutGrp = " << lutGrp << std::endl;
       
       EcalTPGLutIdMap::EcalTPGLutMapItr itLut = lutMap.find(lutGrp) ;
       if (itLut != lutMap.end()) {
