@@ -106,7 +106,15 @@ process.GlobalTag.toGet = cms.VPSet(
 
      cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
                    #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),   # --> not working
-                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),    # --> ok, working
+                     
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_100fb_bycr_v4"),   #  ok
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_60fb_bycr_v4"),     # ok 
+                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),     # ok 
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_0fb_bycr_v4"),   # ok
+ 
+                   
+                   
                    connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   ),
 
