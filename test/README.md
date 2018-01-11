@@ -33,7 +33,15 @@ Plot
       
     tree ->Draw("TPonlineIeta:etaEE", "TPonlineETADC>-1 && etaEE > -99", "colz");
       
+
       
+Test for 2017
+
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:production/Year2017/step2_DIGI_L1_DIGI2RAW_HLT.root   maxEvents=-1   outputFile=rawtoworld-zeeMC-2017.root
+
+
+
+Continue
     
     
     source /cvmfs/cms.cern.ch/crab3/crab.sh

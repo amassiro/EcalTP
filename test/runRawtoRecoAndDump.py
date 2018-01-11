@@ -84,9 +84,18 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_for
 
 process.GlobalTag.toGet = cms.VPSet(
 
+     #cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
+                   ##tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),   # --> not working
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+
+
+
      cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
-                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),   # --> not working
-                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),
+                   tag = cms.string("EcalLaserAPDPNRatios_2017_mc_0fb_bycr_v1"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2017_mc_25fb_bycr_v1"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2017_mc_50fb_bycr_v1"),
                    connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   ),
 
@@ -94,16 +103,16 @@ process.GlobalTag.toGet = cms.VPSet(
 
 
 
-     cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
-                   tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+     #cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
+                   #tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
 
-    cms.PSet(record = cms.string("EcalTPGPhysicsConstRcd"),
-                   tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+    #cms.PSet(record = cms.string("EcalTPGPhysicsConstRcd"),
+                   #tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
 
 
