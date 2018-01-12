@@ -123,6 +123,13 @@ process.GlobalTag.toGet = cms.VPSet(
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
 
+ cms.PSet(record = cms.string("EcalPedestalsRcd"),
+                   #tag = cms.string("EcalPedestals_2018extrap_0fb_mc"),
+                   #tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
+                   tag = cms.string("EcalPedestals_2018extrap_60fb_mc"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
    #cms.PSet(record = cms.string("EcalSRSettingsRcd"),
                    #tag = cms.string("EcalSRSettings_beam2018_option1_mc"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
@@ -133,7 +140,24 @@ process.GlobalTag.toGet = cms.VPSet(
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
 
-   #cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
+   cms.PSet(record = cms.string("EcalTPGLinearizationConstRcd"),
+                   #tag = cms.string("EcalTPGLinearizationConst_2018_mc_0fb_bycr"),
+                   #tag = cms.string("EcalTPGLinearizationConst_2018_mc_30fb_bycr"),
+                   tag = cms.string("EcalTPGLinearizationConst_2018_mc_60fb_bycr"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+
+
+ 
+   cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
+                   #tag = cms.string("EcalTPGPedestals_2018_mc_0fb_bycr"),
+                   #tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
+                   tag = cms.string("EcalTPGPedestals_2018_mc_60fb_bycr"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+ 
+ 
+ #cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
                    #tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
