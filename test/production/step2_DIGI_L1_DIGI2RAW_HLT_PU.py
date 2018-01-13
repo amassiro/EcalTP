@@ -97,104 +97,109 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Candidate_forECALStudies', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_C_chi_v1', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha_v1', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha_v1', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_B_beta_0fb_v1', '')  # ok, it works
+process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_B_beta_60fb_v1', '')  # ok, it works
+
+
+
 
 #process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v10', '')
 
 
 process.GlobalTag.toGet = cms.VPSet(
 
-     cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
-                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),   # --> not working
-                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),    # --> ok, working
+     #cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
+                   ##tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v5"),   # --> not working
+                   ##tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),    # --> ok, working
                      
-                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_100fb_bycr_v4"),   #  ok
-                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_60fb_bycr_v4"),     # ok 
-                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),     # ok 
-                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_0fb_bycr_v4"),   # ok
+                   ##tag = cms.string("EcalLaserAPDPNRatios_2018_mc_100fb_bycr_v4"),   #  ok
+                   ##tag = cms.string("EcalLaserAPDPNRatios_2018_mc_60fb_bycr_v4"),     # ok 
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_v4"),     # ok 
+                   ##tag = cms.string("EcalLaserAPDPNRatios_2018_mc_0fb_bycr_v4"),   # ok
  
                    
                    
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
+
+ ##cms.PSet(record = cms.string("EcalPedestalsRcd"),
+                   ##tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
+                   ##connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ##),
 
  #cms.PSet(record = cms.string("EcalPedestalsRcd"),
-                   #tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
+                   ##tag = cms.string("EcalPedestals_2018extrap_0fb_mc"),
+                   ##tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
+                   #tag = cms.string("EcalPedestals_2018extrap_60fb_mc"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
 
- cms.PSet(record = cms.string("EcalPedestalsRcd"),
-                   #tag = cms.string("EcalPedestals_2018extrap_0fb_mc"),
-                   #tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
-                   tag = cms.string("EcalPedestals_2018extrap_60fb_mc"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+   ##cms.PSet(record = cms.string("EcalSRSettingsRcd"),
+                   ##tag = cms.string("EcalSRSettings_beam2018_option1_mc"),
+                   ##connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ##),
 
-   #cms.PSet(record = cms.string("EcalSRSettingsRcd"),
-                   #tag = cms.string("EcalSRSettings_beam2018_option1_mc"),
-                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  #),
+   ##cms.PSet(record = cms.string("EcalTPGLinearizationConstRcd"),
+                   ##tag = cms.string("EcalTPGLinearizationConst_2018_mc_30fb_bycr"),
+                   ##connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ##),
 
    #cms.PSet(record = cms.string("EcalTPGLinearizationConstRcd"),
-                   #tag = cms.string("EcalTPGLinearizationConst_2018_mc_30fb_bycr"),
+                   ##tag = cms.string("EcalTPGLinearizationConst_2018_mc_0fb_bycr"),
+                   ##tag = cms.string("EcalTPGLinearizationConst_2018_mc_30fb_bycr"),
+                   #tag = cms.string("EcalTPGLinearizationConst_2018_mc_60fb_bycr"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
 
-   cms.PSet(record = cms.string("EcalTPGLinearizationConstRcd"),
-                   #tag = cms.string("EcalTPGLinearizationConst_2018_mc_0fb_bycr"),
-                   #tag = cms.string("EcalTPGLinearizationConst_2018_mc_30fb_bycr"),
-                   tag = cms.string("EcalTPGLinearizationConst_2018_mc_60fb_bycr"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-
 
  
-   cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
-                   #tag = cms.string("EcalTPGPedestals_2018_mc_0fb_bycr"),
-                   #tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
-                   tag = cms.string("EcalTPGPedestals_2018_mc_60fb_bycr"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+   #cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
+                   ##tag = cms.string("EcalTPGPedestals_2018_mc_0fb_bycr"),
+                   ##tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
+                   #tag = cms.string("EcalTPGPedestals_2018_mc_60fb_bycr"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
  
  
- #cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
-                   #tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
+ ##cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
+                   ##tag = cms.string("EcalTPGPedestals_2018_mc_30fb_bycr"),
+                   ##connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ##),
+
+   ##cms.PSet(record = cms.string("EcalTPGPhysicsConstRcd"),
+                   ##tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
+                   ##connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ##),
+   ##cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
+                   ##tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
+                   ##connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ##),
+
+
+
+
+   #cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
+                   #tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
 
    #cms.PSet(record = cms.string("EcalTPGPhysicsConstRcd"),
-                   #tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
-                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  #),
-   #cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
-                   #tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_4.0_2.0"),
+                   #tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
 
 
+   ##cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
+                   ##tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_3.0_1.5_EE_3.5_2.0"),
+                   ##connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ##),
 
 
-   cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
-                   tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-
-   cms.PSet(record = cms.string("EcalTPGPhysicsConstRcd"),
-                   tag = cms.string("EcalTPGPhysicsConst_2018_mc_EB_4.0_2.0_EE_3.5_2.0"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
-
-
-   #cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
-                   #tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_3.0_1.5_EE_3.5_2.0"),
-                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  #),
-
-
-   #cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
-                   #tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_3.0_1.5_EE_4.5_2.5"),
-                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  #),
+   ##cms.PSet(record = cms.string("EcalTPGLutIdMapRcd"),
+                   ##tag = cms.string("EcalTPGLutIdMap_2018_mc_EB_3.0_1.5_EE_4.5_2.5"),
+                   ##connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ##),
 
 
 
