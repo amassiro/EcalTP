@@ -97,11 +97,28 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Cand
 process.GlobalTag.toGet = cms.VPSet(
 
      cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
-                   tag = cms.string("EcalLaserAPDPNRatios_2017_mc_0fb_bycr_v1"),
-                   #tag = cms.string("EcalLaserAPDPNRatios_2017_mc_25fb_bycr_v1"),
-                   #tag = cms.string("EcalLaserAPDPNRatios_2017_mc_50fb_bycr_v1"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2017_mc_0fb_bycr_v2"),
+                   #tag = cms.string("EcalLaserAPDPNRatios_2017_mc_25fb_bycr_v2"),
+                   tag = cms.string("EcalLaserAPDPNRatios_2017_mc_50fb_bycr_v2"),
                    connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   ),
+
+     cms.PSet(record = cms.string("EcalTPGLinearizationConstRcd"),
+                   #tag = cms.string("EcalTPGLinearizationConst_2017_mc_bycr_0fb"),
+                   #tag = cms.string("EcalTPGLinearizationConst_2017_mc_bycr_25fb"),
+                   tag = cms.string("EcalTPGLinearizationConst_2017_mc_bycr_50fb"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+     
+     cms.PSet(record = cms.string("EcalTPGPedestalsRcd"),
+                   #tag = cms.string("EcalTPGPedestals_2017_mc_bycr_0fb"),
+                   #tag = cms.string("EcalTPGPedestals_2017_mc_bycr_25fb"),
+                   tag = cms.string("EcalTPGPedestals_2017_mc_bycr_50fb"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+     
+     
+     
 )
 
 
