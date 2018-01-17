@@ -96,10 +96,10 @@ process.mix.digitizers = cms.PSet(process.theDigitizersValid)
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_Candidate_forECALStudies', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha', '')
-#process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_C_chi_v1', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_C_chi_v1', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha_v1', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_B_beta_0fb_v1', '')  # ok, it works
-process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_B_beta_60fb_v1', '')  # ok, it works
+#process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_B_beta_60fb_v1', '')  # ok, it works
 
 
 
@@ -225,10 +225,13 @@ process.GlobalTag.toGet = cms.VPSet(
                    #tag = cms.string("EcalTPGFineGrainTowerEE_2018_mc"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   #),
-   #cms.PSet(record = cms.string("EcalTPGLutGroupRcd"),
+   cms.PSet(record = cms.string("EcalTPGLutGroupRcd"),
                    #tag = cms.string("EcalTPGLutGroup_2018_mc"),
-                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  #),
+                   tag = cms.string("EcalTPGLutGroup_2018_mc_EB_EE"),
+                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  ),
+                  
+                  
    #cms.PSet(record = cms.string("EcalTPGSlidingWindowRcd"),
                    #tag = cms.string("EcalTPGSlidingWindow_2018_mc"),
                    #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")

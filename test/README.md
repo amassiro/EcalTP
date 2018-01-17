@@ -27,6 +27,8 @@ Plot
     tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1", "colz");
     tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)>=27", "colz");
     tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)<27", "colz");
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)<17", "colz");
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)>=17", "colz");
     
     tree ->Draw("TPflag:2*TPonlineETADC>>h(100,0,12,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)>=27", "colz");
     tree ->Draw("TPflag:2*TPonlineETADC>>h(100,0,12,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)<27", "colz");
