@@ -121,7 +121,10 @@ process.GlobalTag.toGet = cms.VPSet(
                    #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_0fb_bycr_run_v1"),     # no 
                    #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_0fb_bycr_run_v2"),     # ok 
                    #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_30fb_bycr_run_v2"),     # ok 
-                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_60fb_bycr_run_v2"),     # ok 
+                   #tag = cms.string("EcalLaserAPDPNRatios_2018_mc_60fb_bycr_run_v2"),     # no
+                   tag = cms.string("EcalLaserAPDPNRatios_2018_mc_60fb_bycr_run_v2c"),     # ok
+                   
+                    
                    
                    
                    
