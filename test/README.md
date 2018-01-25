@@ -43,6 +43,13 @@ Test for 2017
 
 
 
+      
+Test for SR@PF with weights and multifit at the same time
+
+    cmsRun runRawtoRecoAndDump.py             inputFiles=file:production/step2_DIGI_L1_DIGI2RAW_HLT.root   maxEvents=-1   outputFile=rawtoworld-zeeMC-2017-weights-and-multifit.root
+
+    
+
 Continue
     
     

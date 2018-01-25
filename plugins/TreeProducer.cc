@@ -481,7 +481,7 @@ TreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
       uint32_t lutGrp = 999 ;
       if (itgrp != lutGrpMap.end()) lutGrp = itgrp->second ;
       
-      if (lutGrp != 0 ) std::cout << "        lutGrp = " << lutGrp << std::endl;
+//       if (lutGrp != 0 ) std::cout << "        lutGrp = " << lutGrp << std::endl;
       
       EcalTPGLutIdMap::EcalTPGLutMapItr itLut = lutMap.find(lutGrp) ;
       if (itLut != lutMap.end()) {
