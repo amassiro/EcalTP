@@ -162,7 +162,10 @@ class TreeProducerComparison : public edm::one::EDAnalyzer<edm::one::SharedResou
       float _onlineEnergyEE[14648];
       int _flagEB[61200];
       int _flagEE[14648];
-
+      // new float in rechits
+      float _onlineEnergyEB_weights_inRechit[61200];
+      float _onlineEnergyEE_weights_inRechit[14648];
+      
       float _onlineEnergyEB_weights[61200];
       float _onlineEnergyEE_weights[14648];
       int _flagEB_weights[61200];
@@ -240,7 +243,11 @@ TreeProducerComparison::TreeProducerComparison(const edm::ParameterSet& iConfig)
    outTree->Branch("event",             &_event,           "event/i");
    outTree->Branch("onlineEnergyEB",       _onlineEnergyEB,    "onlineEnergyEB[61200]/F");
    outTree->Branch("onlineEnergyEE",       _onlineEnergyEE,    "onlineEnergyEE[14648]/F");
-
+   outTree->Branch("onlineEnergyEB_weights_inRechit",       _onlineEnergyEB_weights_inRechit,    "onlineEnergyEB_weights_inRechit[61200]/F");
+   outTree->Branch("onlineEnergyEE_weights_inRechit",       _onlineEnergyEE_weights_inRechit,    "onlineEnergyEE_weights_inRechit[14648]/F");
+   
+   
+   
    outTree->Branch("onlineEnergyEB_weights",       _onlineEnergyEB_weights,    "onlineEnergyEB_weights[61200]/F");
    outTree->Branch("onlineEnergyEE_weights",       _onlineEnergyEE_weights,    "onlineEnergyEE_weights[14648]/F");
    
@@ -365,6 +372,7 @@ TreeProducerComparison::analyze(const edm::Event& iEvent, const edm::EventSetup&
     //---- Fill flag for this crystal
     _flagEB[ixtal] = -99;
     _onlineEnergyEB[ixtal] = -99;
+    _onlineEnergyEB_weights_inRechit[ixtal] = -99;
     _flagEB_weights[ixtal] = -99;
     _onlineEnergyEB_weights[ixtal] = -99;
     _etaEB[ixtal] = -99;
@@ -374,6 +382,7 @@ TreeProducerComparison::analyze(const edm::Event& iEvent, const edm::EventSetup&
     //---- Fill flag for this crystal
     _flagEE[ixtal] = -99;
     _onlineEnergyEE[ixtal] = -99;
+    _onlineEnergyEE_weights_inRechit[ixtal] = -99;
     _flagEE_weights[ixtal] = -99;
     _onlineEnergyEE_weights[ixtal] = -99;
     _etaEE[ixtal] = -99;
@@ -401,11 +410,13 @@ TreeProducerComparison::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
     _onlineEnergyEB[EBDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();    
+    _onlineEnergyEB_weights_inRechit[EBDetId(itrechit->id()).hashedIndex()] =  itrechit->secondAmplitude();     //---- NB: only on test branch this will compile and work! 
   }
 
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = eerechits->begin(); itrechit != eerechits->end(); itrechit++ ) {
     _onlineEnergyEE[EEDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();
+    _onlineEnergyEE_weights_inRechit[EEDetId(itrechit->id()).hashedIndex()] =  itrechit->secondAmplitude();     //---- NB: only on test branch this will compile and work! 
   }
 
   

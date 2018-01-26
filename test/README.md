@@ -46,10 +46,23 @@ Test for 2017
       
 Test for SR@PF with weights and multifit at the same time
 
-    cmsRun runRawtoRecoAndDump.py             inputFiles=file:production/step2_DIGI_L1_DIGI2RAW_HLT.root   maxEvents=-1   outputFile=rawtoworld-zeeMC-2017-weights-and-multifit.root
+    cmsRun runRawtoRecoAndDumpData.weightsVsMF.py             inputFiles=file:production/step2_DIGI_L1_DIGI2RAW_HLT.root    maxEvents=-1   outputFile=rawtoworld-zeedata.compareWeightsVsMF-weights-and-multifit.root
+
+
+    r99t rawtoworld-zeedata.compareWeightsVsMF-weights-and-multifit.root
+    
+    
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("onlineEnergyEE_weights/onlineEnergyEE:etaEE",           "etaEE>-80 && onlineEnergyEE > 3", "colz");
+    tree ->Draw("onlineEnergyEE_weights_inRechit/onlineEnergyEE:etaEE", "etaEE>-80 && onlineEnergyEE > 3", "colz");
+    tree ->Draw("onlineEnergyEE_weights_inRechit/onlineEnergyEE_weights:etaEE", "etaEE>-80 && onlineEnergyEE_weights > 3", "colz");
+
+    tree ->Draw("onlineEnergyEE_weights_inRechit/onlineEnergyEE_weights", "etaEE>-80 && onlineEnergyEE_weights > 3");
+    tree ->Draw("onlineEnergyEB_weights_inRechit/onlineEnergyEB_weights", "etaEB>-80 && onlineEnergyEB_weights > 3");
 
     
-
+    
+    
 Continue
     
     
