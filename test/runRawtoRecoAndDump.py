@@ -7,7 +7,9 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.StandardSequences.Eras import eras
 
-process = cms.Process('RECO',eras.Run2_2017)
+#process = cms.Process('RECO',eras.Run2_2017)
+#process = cms.Process('RECOMIO',eras.Run2_2017)
+process = cms.Process('RECOMIO',eras.Run2_2018)
 
 
 
@@ -69,7 +71,8 @@ process.configurationMetadata = cms.untracked.PSet(
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_C_chi_v1', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_C_chi_v1', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha_v1', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '100X_upgrade2018_realistic_forECAL_A_alpha_v1', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v10', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '92X_upgrade2017_realistic_v7_forTEST_EGM_JetMET', '')
@@ -100,11 +103,11 @@ process.GlobalTag.toGet = cms.VPSet(
                   #),
 
 
-     cms.PSet(record = cms.string("EcalTPGLutGroupRcd"),
-                   #tag = cms.string("EcalTPGLutGroup_2018_mc"),
-                   tag = cms.string("EcalTPGLutGroup_2018_mc_EB_EE"),
-                   connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
-                  ),
+     #cms.PSet(record = cms.string("EcalTPGLutGroupRcd"),
+                   ##tag = cms.string("EcalTPGLutGroup_2018_mc"),
+                   #tag = cms.string("EcalTPGLutGroup_2018_mc_EB_EE"),
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
 
 
@@ -242,10 +245,11 @@ process.ecalDigis_step = cms.Path(process.ecalDigis)
 process.TreeProducer_step = cms.Path(process.TreeProducer)
 
 
-
-
-
-
+#
+# mah ...
+process.options.SkipEvent = cms.untracked.vstring('ProductNotFound')
+#
+#
 
 
 
