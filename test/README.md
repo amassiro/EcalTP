@@ -60,7 +60,20 @@ Test for SR@PF with weights and multifit at the same time
     tree ->Draw("onlineEnergyEE_weights_inRechit/onlineEnergyEE_weights", "etaEE>-80 && onlineEnergyEE_weights > 3");
     tree ->Draw("onlineEnergyEB_weights_inRechit/onlineEnergyEB_weights", "etaEB>-80 && onlineEnergyEB_weights > 3");
 
+ 
+Test online vs offline 
+
+    r99t rawtoworld-zee.relval.root  rawtoworld-zeedata.root            drawCompare.cxx
+
+    source /cvmfs/cms.cern.ch/crab3/crab.sh
+    voms-proxy-init --voms cms
+    xrdcp root://cms-xrd-global.cern.ch//store/data/Run2017B/DoubleEG/RAW-RECO/ZElectron-PromptReco-v1/000/297/047/00000/1CA3695B-6456-E711-A8AE-02163E0140DA.root /tmp/amassiro/
     
+    cmsRun runRawtoRecoAndDumpData.py             inputFiles=file:/tmp/amassiro/1CA3695B-6456-E711-A8AE-02163E0140DA.root   maxEvents=-1   outputFile=rawtoworld-zeedata.root
+
+    cmsRun runRawtoRecoAndDump.py    inputFiles=file:/eos/cms/store/relval/CMSSW_9_2_9/RelValZEE_13/GEN-SIM-DIGI-RAW-HLTDEBUG/PUpmx25ns_92X_upgrade2017_realistic_Candidate_forECALStudies-v1/00000/0C197E9F-D193-E711-A52D-0025905A610A.root    maxEvents=-1   outputFile=rawtoworld-zee.relval.root
+
+
     
     
 Continue
