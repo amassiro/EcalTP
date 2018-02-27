@@ -7,7 +7,8 @@ where:
     /afs/cern.ch/user/a/amassiro/work/ECAL/CMSSW_9_2_13/src/ECALValidation/EcalTP
     /afs/cern.ch/user/a/amassiro/work/ECAL/CMSSW_10_0_0_pre2/src/ECALValidation/EcalTP
     /afs/cern.ch/work/a/amassiro/ECAL/SRatPF/CMSSW_10_0_0_pre3/src/ECALValidation
-    
+    /afs/cern.ch/user/a/amassiro/work/ECAL/ForSMP/CMSSW_9_4_0/src/ECALValidation/EcalTP
+
 How to:
 
     mkdir ECALValidation

@@ -410,13 +410,13 @@ TreeProducerComparison::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = ebrechits->begin(); itrechit != ebrechits->end(); itrechit++ ) {
     _onlineEnergyEB[EBDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();    
-    _onlineEnergyEB_weights_inRechit[EBDetId(itrechit->id()).hashedIndex()] =  itrechit->secondAmplitude();     //---- NB: only on test branch this will compile and work! 
+//     _onlineEnergyEB_weights_inRechit[EBDetId(itrechit->id()).hashedIndex()] =  itrechit->secondAmplitude();     //---- NB: only on test branch this will compile and work! 
   }
 
   
   for (EcalUncalibratedRecHitCollection::const_iterator itrechit = eerechits->begin(); itrechit != eerechits->end(); itrechit++ ) {
     _onlineEnergyEE[EEDetId(itrechit->id()).hashedIndex()] =  itrechit->amplitude();
-    _onlineEnergyEE_weights_inRechit[EEDetId(itrechit->id()).hashedIndex()] =  itrechit->secondAmplitude();     //---- NB: only on test branch this will compile and work! 
+//     _onlineEnergyEE_weights_inRechit[EEDetId(itrechit->id()).hashedIndex()] =  itrechit->secondAmplitude();     //---- NB: only on test branch this will compile and work! 
   }
 
   
