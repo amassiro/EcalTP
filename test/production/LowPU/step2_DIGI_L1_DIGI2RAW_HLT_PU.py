@@ -112,9 +112,16 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v10', '')
 process.GlobalTag.toGet = cms.VPSet(
 
      cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
-                   tag = cms.string("EcalLaserAPDPNRatios_Run2017H_307017"),   
+                   #tag = cms.string("EcalLaserAPDPNRatios_Run2017H_307017"),     # ---> baaaad
+                   tag = cms.string("EcalLaserAPDPNRatios_mc_Run2017H_307017"),     # ---> good                    
                    connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
                   ),
+
+     #cms.PSet(record = cms.string("EcalLaserAPDPNRatiosRcd"),
+                   ##tag = cms.string("EcalLaserAPDPNRatios_Run2017G_306580"),      # ---> baaaad
+                   #tag = cms.string("EcalLaserAPDPNRatios_mc_Run2017G_306580"),      # ---> good
+                   #connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS")
+                  #),
 
  ##cms.PSet(record = cms.string("EcalPedestalsRcd"),
                    ##tag = cms.string("EcalPedestals_2018extrap_30fb_mc"),
