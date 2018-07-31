@@ -151,7 +151,20 @@ Begin processing the 47th record. Run 1, Event 5948, LumiSection 60 at 28-Sep-20
 
  
  
- 
+Check 2018 MC
+====
+
+    cmsRun runDump.py             inputFiles=file:/afs/cern.ch/user/a/amassiro/work/ECAL/CMSSW_10_2_0/src/ECALValidation/EcalPF/test/production/step3.root
+    --> not working 
+    
+    cmsRun runRawtoRecoAndDump2018.py             inputFiles=file:/afs/cern.ch/user/a/amassiro/work/ECAL/CMSSW_10_2_0/src/ECALValidation/EcalPF/test/production/step2.root
+    
+    r99t output.root  
+    TTree* tree = (TTree*) _file0->Get("TreeProducer/tree")
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1", "colz");
+    tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)>=27", "colz");
+
+
  
 
 Run

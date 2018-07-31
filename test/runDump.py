@@ -61,6 +61,14 @@ process.TreeProducer = cms.EDAnalyzer('TreeProducer',
                            EcalUncalibRecHitsEECollection = cms.InputTag("ecalMultiFitUncalibRecHit","EcalUncalibRecHitsEE"),
                            #EcalUncalibRecHitsEBCollection = cms.InputTag("ecalRecHit",  "EcalRecHitsEB"),
                            #EcalUncalibRecHitsEECollection = cms.InputTag("ecalRecHit",  "EcalRecHitsEE"),
+ 
+                           EBRecHitCollectionLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
+                           EERecHitCollectionLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
+
+                           TPCollection = cms.InputTag("ecalDigis","EcalTriggerPrimitives"),
+
+                           TPEmuCollection = cms.InputTag("ecalTriggerPrimitiveDigis"),
+ 
 
                            )
 
