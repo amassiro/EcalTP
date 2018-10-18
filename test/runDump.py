@@ -65,9 +65,15 @@ process.TreeProducer = cms.EDAnalyzer('TreeProducer',
                            EBRecHitCollectionLabel = cms.InputTag("ecalRecHit","EcalRecHitsEB"),
                            EERecHitCollectionLabel = cms.InputTag("ecalRecHit","EcalRecHitsEE"),
 
-                           TPCollection = cms.InputTag("ecalDigis","EcalTriggerPrimitives"),
+                           #TPCollection = cms.InputTag("ecalDigis","EcalTriggerPrimitives"),
+                           
+                           # changes to run on reco
+#edm::SortedCollection<EcalTriggerPrimitiveDigi,edm::StrictWeakOrdering<EcalTriggerPrimitiveDigi> >    "ecalTPSkim"                ""                "RECO"    
+                           TPCollection = cms.InputTag("ecalTPSkim"),
 
-                           TPEmuCollection = cms.InputTag("ecalTriggerPrimitiveDigis"),
+
+                           #TPEmuCollection = cms.InputTag("ecalTriggerPrimitiveDigis"),
+                           TPEmuCollection = cms.InputTag("ecalTPSkim"),
  
 
                            )

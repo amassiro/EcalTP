@@ -165,6 +165,8 @@ Check 2018 MC
     tree ->Draw("TPflag:TPonlineETADC>>h(100,0,6,100,0,6", "TPonlineETADC>-1 && abs(TPonlineIeta)>=27", "colz");
 
 
+    cmsRun runDump.py             inputFiles=/store/relval/CMSSW_10_2_5/RelValQCD_FlatPt_15_3000HS_13/GEN-SIM-RECO/102X_upgrade2018_realistic_v12_Can30fb_v1-v1/10000/9163AB5D-8C85-B747-B534-9E72AE581405.root
+    
  
 
 Run
